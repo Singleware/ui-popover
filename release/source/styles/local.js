@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Class = require("@singleware/class");
 const OSS = require("@singleware/oss");
 /**
- * Popover local stylesheet class.
+ * Local popover, stylesheet class.
  */
 let Local = class Local extends OSS.Stylesheet {
     /**
@@ -24,91 +24,92 @@ let Local = class Local extends OSS.Stylesheet {
         /**
          * Popover styles.
          */
-        this.element = this.select(':host>.popover');
+        this.element = this.select(':host>label');
         /**
          * Slotted input styles.
          */
-        this.slottedInput = this.select(':host>.popover>.input::slotted(*)');
+        this.slottedInput = this.select(':host slot[name="input"]::slotted(*)');
         /**
-         * Slotted panel styles.
+         * Slotted content styles.
          */
-        this.slottedPanel = this.select(':host>.popover>.panel::slotted(*)');
+        this.slottedContent = this.select(':host slot[name="content"]::slotted(*)');
         /**
-         * Panel styles.
+         * Content styles.
          */
-        this.panel = this.select(':host>.popover>.panel');
+        this.content = this.select(':host slot[name="content"]');
         /**
-         * Hidden panel styles.
+         * Hidden content styles.
          */
-        this.hiddenPanel = this.select(':host(:not([opened]))>.popover>.panel');
+        this.hiddenContent = this.select(':host(:not([open])) slot[name="content"]');
         /**
-         * Top panel styles.
+         * Top content styles.
          */
-        this.topPanel = this.select(':host([placement="top"])>.popover>.panel');
+        this.topContent = this.select(':host([placement="top"]) slot[name="content"]');
         /**
-         * Right panel styles.
+         * Right content styles.
          */
-        this.rightPanel = this.select(':host([placement="right"])>.popover>.panel');
+        this.rightContent = this.select(':host([placement="right"]) slot[name="content"]');
         /**
-         * Bottom panel styles.
+         * Bottom content styles.
          */
-        this.bottomPanel = this.select(':host([placement="bottom"])>.popover>.panel', ':host(:not([placement]))>.popover>.panel');
+        this.bottomContent = this.select(':host([placement="bottom"]) slot[name="content"]', ':host(:not([placement])) slot[name="content"]');
         /**
-         * Left panel styles.
+         * Left content styles.
          */
-        this.leftPanel = this.select(':host([placement="left"])>.popover>.panel');
+        this.leftContent = this.select(':host([placement="left"]) slot[name="content"]');
         /**
-         * Start left and right panel styles.
+         * Start left and right content styles.
          */
-        this.startLeftRightPanel = this.select(':host([placement="left"][alignment="start"])>.popover>.panel', ':host([placement="right"][alignment="start"])>.popover>.panel', ':host([placement="left"]:not(alignment))>.popover>.panel', ':host([placement="right"]:not(alignment))>.popover>.panel');
+        this.startLeftRightContent = this.select(':host([placement="left"][alignment="start"]) slot[name="content"]', ':host([placement="right"][alignment="start"]) slot[name="content"]', ':host([placement="left"]:not(alignment)) slot[name="content"]', ':host([placement="right"]:not(alignment)) slot[name="content"]');
         /**
-         * Middle left and right panel styles.
+         * Middle left and right content styles.
          */
-        this.middleLeftRightPanel = this.select(':host([alignment="middle"][placement="left"])>.popover>.panel', ':host([alignment="middle"][placement="right"])>.popover>.panel');
+        this.middleLeftRightContent = this.select(':host([alignment="middle"][placement="left"]) slot[name="content"]', ':host([alignment="middle"][placement="right"]) slot[name="content"]');
         /**
-         * End left and right panel styles.
+         * End left and right content styles.
          */
-        this.endLeftRightPanel = this.select(':host([alignment="end"][placement="left"])>.popover>.panel', ':host([alignment="end"][placement="right"])>.popover>.panel');
+        this.endLeftRightContent = this.select(':host([alignment="end"][placement="left"]) slot[name="content"]', ':host([alignment="end"][placement="right"]) slot[name="content"]');
         /**
-         * Start top and bottom panel styles.
+         * Start top and bottom content styles.
          */
-        this.startTopBottomPanel = this.select(':host([placement="top"][alignment="start"])>.popover>.panel', ':host([placement="bottom"][alignment="start"])>.popover>.panel', ':host([placement="top"]:not(alignment))>.popover>.panel', ':host([placement="bottom"]:not(alignment))>.popover>.panel', ':host(:not([placement]):not(alignment))>.popover>.panel');
+        this.startTopBottomContent = this.select(':host([placement="top"][alignment="start"]) slot[name="content"]', ':host([placement="bottom"][alignment="start"]) slot[name="content"]', ':host([placement="top"]:not(alignment)) slot[name="content"]', ':host([placement="bottom"]:not(alignment)) slot[name="content"]', ':host(:not([placement]):not(alignment)) slot[name="content"]');
         /**
-         * Middle top and bottom panel styles.
+         * Middle top and bottom content styles.
          */
-        this.middleTopBottomPanel = this.select(':host([alignment="middle"][placement="top"])>.popover>.panel', ':host([alignment="middle"][placement="bottom"])>.popover>.panel', ':host([alignment="middle"]:not([placement]))>.popover>.panel');
+        this.middleTopBottomContent = this.select(':host([alignment="middle"][placement="top"]) slot[name="content"]', ':host([alignment="middle"][placement="bottom"]) slot[name="content"]', ':host([alignment="middle"]:not([placement])) slot[name="content"]');
         /**
-         * End top and bottom panel styles.
+         * End top and bottom content styles.
          */
-        this.endTopBottomPanel = this.select(':host([alignment="end"][placement="top"])>.popover>.panel', ':host([alignment="end"][placement="bottom"])>.popover>.panel', ':host([alignment="end"]:not([placement]))>.popover>.panel');
+        this.endTopBottomContent = this.select(':host([alignment="end"][placement="top"]) slot[name="content"]', ':host([alignment="end"][placement="bottom"]) slot[name="content"]', ':host([alignment="end"]:not([placement])) slot[name="content"]');
         this.element.display = 'flex';
         this.element.position = 'relative';
         this.element.flexDirection = 'column';
         this.element.position = 'relative';
-        this.element.height = 'inherit';
-        this.element.width = 'inherit';
         this.slottedInput.textAlign = 'left';
         this.slottedInput.width = '100%';
-        this.slottedPanel.border = 'var(--swe-popover-border-size, 0.0625rem) solid var(--swe-popover-border-color, hsl(0, 0%, 90%))';
-        this.panel.display = 'block';
-        this.panel.position = 'absolute';
-        this.panel.zIndex = 1;
-        this.hiddenPanel.display = 'none';
-        this.hiddenPanel.zIndex = 0;
-        this.topPanel.bottom = '100%';
-        this.rightPanel.left = '100%';
-        this.bottomPanel.top = '100%';
-        this.leftPanel.right = '100%';
-        this.startLeftRightPanel.top = '0';
-        this.middleLeftRightPanel.transform = 'translateY(-50%)';
-        this.middleLeftRightPanel.top = '50%';
-        this.endLeftRightPanel.transform = 'translateY(-100%)';
-        this.endLeftRightPanel.top = '100%';
-        this.startTopBottomPanel.left = '0';
-        this.middleTopBottomPanel.transform = 'translateX(-50%)';
-        this.middleTopBottomPanel.left = '50%';
-        this.endTopBottomPanel.transform = 'translateX(-100%)';
-        this.endTopBottomPanel.left = '100%';
+        this.slottedContent.borderRadius = 'var(--swe-popover-content-border-radius, var(--swe-border-radius, .25rem))';
+        this.slottedContent.borderWidth = 'var(--swe-popover-content-border-size, var(--swe-border-size, .0625rem))';
+        this.slottedContent.borderColor = 'var(--swe-popover-content-border-color, var(--swe-border-color, hsl(0, 0%, 80%)))';
+        this.slottedContent.borderStyle = 'solid';
+        this.content.display = 'block';
+        this.content.position = 'absolute';
+        this.content.zIndex = 1;
+        this.hiddenContent.display = 'none';
+        this.hiddenContent.zIndex = 0;
+        this.topContent.bottom = '100%';
+        this.rightContent.left = '100%';
+        this.bottomContent.top = '100%';
+        this.leftContent.right = '100%';
+        this.startLeftRightContent.top = '0';
+        this.middleLeftRightContent.transform = 'translateY(-50%)';
+        this.middleLeftRightContent.top = '50%';
+        this.endLeftRightContent.transform = 'translateY(-100%)';
+        this.endLeftRightContent.top = '100%';
+        this.startTopBottomContent.left = '0';
+        this.middleTopBottomContent.transform = 'translateX(-50%)';
+        this.middleTopBottomContent.left = '50%';
+        this.endTopBottomContent.transform = 'translateX(-100%)';
+        this.endTopBottomContent.left = '100%';
     }
 };
 __decorate([
@@ -119,43 +120,43 @@ __decorate([
 ], Local.prototype, "slottedInput", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "slottedPanel", void 0);
+], Local.prototype, "slottedContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "panel", void 0);
+], Local.prototype, "content", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "hiddenPanel", void 0);
+], Local.prototype, "hiddenContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "topPanel", void 0);
+], Local.prototype, "topContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "rightPanel", void 0);
+], Local.prototype, "rightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "bottomPanel", void 0);
+], Local.prototype, "bottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "leftPanel", void 0);
+], Local.prototype, "leftContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "startLeftRightPanel", void 0);
+], Local.prototype, "startLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "middleLeftRightPanel", void 0);
+], Local.prototype, "middleLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "endLeftRightPanel", void 0);
+], Local.prototype, "endLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "startTopBottomPanel", void 0);
+], Local.prototype, "startTopBottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "middleTopBottomPanel", void 0);
+], Local.prototype, "middleTopBottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "endTopBottomPanel", void 0);
+], Local.prototype, "endTopBottomContent", void 0);
 Local = __decorate([
     Class.Describe()
 ], Local);

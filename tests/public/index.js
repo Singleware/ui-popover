@@ -4365,6 +4365,1961 @@ exports.setChildProperty = (slot, property, value) => helper_1.Helper.setChildPr
 "@singleware/ui-control":{pack:true, invoke:function(exports, require){
 Object.assign(exports, require('index'));
 }},
+"@singleware/ui-select/component":{pack:false, invoke:function(exports, require){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+const Class = require("@singleware/class");
+const JSX = require("@singleware/jsx");
+const Control = require("@singleware/ui-control");
+/**
+ * Select component class.
+ */
+let Component = class Component extends Control.Component {
+    /**
+     * Default constructor.
+     * @param properties Initial properties.
+     * @param children Initial children.
+     */
+    constructor(properties, children) {
+        super(properties, children);
+        /**
+         * Element instance.
+         */
+        this.skeleton = (JSX.create("swe-select", { class: this.properties.class, slot: this.properties.slot, name: this.properties.name, searchable: this.properties.searchable, required: this.properties.required, readOnly: this.properties.readOnly, disabled: this.properties.disabled, onFocus: this.properties.onFocus, onBlur: this.properties.onBlur, onChange: this.properties.onChange }, this.children));
+        this.skeleton.addEventListener('renderoption', this.renderOptionHandler.bind(this));
+        this.skeleton.addEventListener('renderselection', this.renderSelectionHandler.bind(this));
+        this.skeleton.addEventListener('rendergroup', this.renderGroupHandler.bind(this));
+        this.initialize();
+    }
+    /**
+     * Render option, event handler.
+     * @param event Event information.
+     */
+    renderOptionHandler(event) {
+        if (this.properties.onRenderOption) {
+            event.detail.element = this.properties.onRenderOption(event.detail.option);
+        }
+    }
+    /**
+     * Render selection, event handler.
+     * @param event Event information.
+     */
+    renderSelectionHandler(event) {
+        if (this.properties.onRenderSelection) {
+            event.detail.element = this.properties.onRenderSelection(event.detail.option);
+        }
+    }
+    /**
+     * Render group, event handler.
+     * @param event Event information.
+     */
+    renderGroupHandler(event) {
+        if (this.properties.onRenderGroup) {
+            event.detail.element = this.properties.onRenderGroup(event.detail.group);
+        }
+    }
+    /**
+     * Add the specified list of options.
+     * @param options List of options.
+     */
+    addOptions(options) {
+        for (const option of options) {
+            if (typeof option !== 'string') {
+                this.skeleton.addOption(option.value, option.label, { group: option.group, tags: option.tags, custom: option.custom });
+            }
+            else {
+                this.skeleton.addOption(option, option);
+            }
+        }
+    }
+    /**
+     * Initializes the select element adding options and selecting the specified value.
+     */
+    initialize() {
+        if (this.properties.options) {
+            this.addOptions(this.properties.options);
+            if (this.properties.value) {
+                this.skeleton.value = this.properties.value;
+            }
+        }
+    }
+    /**
+     * Gets the element.
+     */
+    get element() {
+        return this.skeleton;
+    }
+    /**
+     * Gets the selected option.
+     */
+    get selection() {
+        return this.skeleton.selection;
+    }
+    /**
+     * Gets the current search.
+     */
+    get search() {
+        return this.skeleton.search;
+    }
+    /**
+     * Gets the opened state.
+     */
+    get opened() {
+        return this.skeleton.opened;
+    }
+    /**
+     * Gets the options found state.
+     */
+    get found() {
+        return this.skeleton.found;
+    }
+    /**
+     * Gets the total number of options.
+     */
+    get count() {
+        return this.skeleton.count;
+    }
+    /**
+     * Gets the empty state of the element.
+     */
+    get empty() {
+        return this.skeleton.empty;
+    }
+    /**
+     * Gets the element name.
+     */
+    get name() {
+        return this.skeleton.name;
+    }
+    /**
+     * Sets the element name.
+     */
+    set name(name) {
+        this.skeleton.name = name;
+    }
+    /**
+     * Gets the element value.
+     */
+    get value() {
+        return this.skeleton.value;
+    }
+    /**
+     * Sets the element value.
+     */
+    set value(value) {
+        this.skeleton.value = value;
+    }
+    /**
+     * Gets the default value of the element.
+     */
+    get defaultValue() {
+        return this.skeleton.defaultValue;
+    }
+    /**
+     * Sets the default value of the element.
+     */
+    set defaultValue(value) {
+        this.skeleton.defaultValue = value;
+    }
+    /**
+     * Gets the searchable state of the element.
+     */
+    get searchable() {
+        return this.skeleton.searchable;
+    }
+    /**
+     * Sets the searchable state of the element.
+     */
+    set searchable(state) {
+        this.skeleton.searchable = state;
+    }
+    /**
+     * Gets the required state of the element.
+     */
+    get required() {
+        return this.skeleton.required;
+    }
+    /**
+     * Sets the required state of the element.
+     */
+    set required(state) {
+        this.skeleton.required = state;
+    }
+    /**
+     * Gets the read-only state of the element.
+     */
+    get readOnly() {
+        return this.skeleton.readOnly;
+    }
+    /**
+     * Sets the read-only state of the element.
+     */
+    set readOnly(state) {
+        this.skeleton.readOnly = state;
+    }
+    /**
+     * Gets the disabled state of the element.
+     */
+    get disabled() {
+        return this.skeleton.disabled;
+    }
+    /**
+     * Sets the disabled state of the element.
+     */
+    set disabled(state) {
+        this.skeleton.disabled = state;
+    }
+    /**
+     * Move the focus to this element.
+     */
+    focus() {
+        this.skeleton.focus();
+    }
+    /**
+     * Reset the element value to its initial value.
+     */
+    reset() {
+        this.skeleton.reset();
+    }
+    /**
+     * Checks the element validity.
+     * @returns Returns true when the element is valid, false otherwise.
+     */
+    checkValidity() {
+        return this.skeleton.checkValidity();
+    }
+    /**
+     * Set the element custom validity error message.
+     * @param error Custom error message.
+     */
+    setCustomValidity(error) {
+        this.skeleton.setCustomValidity(error);
+    }
+    /**
+     * Adds the specified group into the groups list.
+     * @param name Group name.
+     * @param label Group label.
+     */
+    addGroup(name, label) {
+        this.skeleton.addGroup(name, label);
+    }
+    /**
+     * Adds the specified option into the options list.
+     * @param value Option value.
+     * @param label Option label.
+     * @param data Option metadata.
+     * @returns Returns true when the option has been added, false otherwise.
+     */
+    addOption(value, label, data = {}) {
+        return this.skeleton.addOption(value, label, data);
+    }
+    /**
+     * Removes all the options that corresponds to the specified option value.
+     * @param value Option value.
+     * @returns Returns true when some option was removed or false otherwise.
+     */
+    removeOption(value) {
+        return this.skeleton.removeOption(value);
+    }
+    /**
+     * Clear all options.
+     */
+    clear() {
+        this.skeleton.clear();
+    }
+    /**
+     * Opens the options list.
+     */
+    open() {
+        this.skeleton.open();
+    }
+    /**
+     * Closes the options list.
+     */
+    close() {
+        this.skeleton.close();
+    }
+    /**
+     * Toggles the options list.
+     */
+    toggle() {
+        this.skeleton.toggle();
+    }
+};
+__decorate([
+    Class.Private()
+], Component.prototype, "skeleton", void 0);
+__decorate([
+    Class.Private()
+], Component.prototype, "renderOptionHandler", null);
+__decorate([
+    Class.Private()
+], Component.prototype, "renderSelectionHandler", null);
+__decorate([
+    Class.Private()
+], Component.prototype, "renderGroupHandler", null);
+__decorate([
+    Class.Private()
+], Component.prototype, "addOptions", null);
+__decorate([
+    Class.Private()
+], Component.prototype, "initialize", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "element", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "selection", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "search", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "opened", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "found", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "count", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "empty", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "name", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "value", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "defaultValue", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "searchable", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "required", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "readOnly", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "disabled", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "focus", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "reset", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "checkValidity", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "setCustomValidity", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "addGroup", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "addOption", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "removeOption", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "clear", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "open", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "close", null);
+__decorate([
+    Class.Public()
+], Component.prototype, "toggle", null);
+Component = __decorate([
+    Class.Describe()
+], Component);
+exports.Component = Component;
+
+}},
+"@singleware/ui-select/element":{pack:false, invoke:function(exports, require){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Element_1;
+"use strict";
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+const Class = require("@singleware/class");
+const JSX = require("@singleware/jsx");
+const Control = require("@singleware/ui-control");
+const stylesheet_1 = require("./stylesheet");
+/**
+ * Select element.
+ */
+let Element = Element_1 = class Element extends Control.Element {
+    /**
+     * Default constructor.
+     */
+    constructor() {
+        super();
+        /**
+         * Default text for no selections in the text input.
+         */
+        this.defaultText = '';
+        /**
+         * Default nodes for no selections in the button input.
+         */
+        this.defaultNodes = [];
+        /**
+         * Map of options.
+         */
+        this.optionsMap = {};
+        /**
+         * List of active options.
+         */
+        this.activatedList = [];
+        /**
+         * Map of entity group by name.
+         */
+        this.groupsMap = {};
+        /**
+         * Map of element group by entity group.
+         */
+        this.groupElementMap = new WeakMap();
+        /**
+         * Map of element option by entity option.
+         */
+        this.optionElementMap = new WeakMap();
+        /**
+         * Determines whether the result or empty element slot can be closed or not.
+         */
+        this.canClose = true;
+        /**
+         * Element styles.
+         */
+        this.styles = new stylesheet_1.Stylesheet();
+        /**
+         * Input slot element.
+         */
+        this.inputSlot = (JSX.create("slot", { name: "input", class: "input", onClick: this.toggleListHandler.bind(this), onSlotChange: this.slotChangeHandler.bind(this) }));
+        /**
+         * Arrow slot element.
+         */
+        this.arrowSlot = JSX.create("slot", { name: "arrow", class: "arrow", onClick: this.toggleListHandler.bind(this) });
+        /**
+         * Search slot element.
+         */
+        this.searchSlot = JSX.create("slot", { name: "search", class: "search", onKeyUp: this.updateResultList.bind(this) });
+        /**
+         * Result slot element.
+         */
+        this.resultSlot = JSX.create("slot", { name: "result", class: "result", onMouseDown: this.preventCloseHandler.bind(this) });
+        /**
+         * Empty slot element.
+         */
+        this.emptySlot = (JSX.create("slot", { name: "empty", class: "empty", onMouseDown: this.preventCloseHandler.bind(this), onClick: this.closeListHandler.bind(this) }));
+        /**
+         * Select layout element.
+         */
+        this.selectLayout = (JSX.create("label", { class: "select" },
+            JSX.create("div", { class: "field" },
+                this.searchSlot,
+                this.inputSlot,
+                this.arrowSlot),
+            this.resultSlot,
+            this.emptySlot));
+        /**
+         * Select styles element.
+         */
+        this.selectStyles = JSX.create("style", { type: "text/css" }, this.styles.toString());
+        const shadow = JSX.append(this.attachShadow({ mode: 'closed' }), this.selectStyles, this.selectLayout);
+        shadow.addEventListener('keydown', this.optionKeydownHandler.bind(this));
+        this.inputSlot.addEventListener('focus', this.focusListHandler.bind(this), true);
+        this.inputSlot.addEventListener('blur', this.blurListHandler.bind(this), true);
+        this.searchSlot.addEventListener('blur', this.blurListHandler.bind(this), true);
+    }
+    /**
+     * Update all validation attributes.
+     */
+    updateValidation() {
+        this.updatePropertyState('empty', this.empty);
+        this.updatePropertyState('invalid', !this.empty && !this.checkValidity());
+    }
+    /**
+     * Updates the input element with the specified option entity.
+     * @param option Option entity.
+     */
+    updateInputSelection(option) {
+        const selection = this.renderSelectionElement(option);
+        const input = this.getRequiredChildElement(this.inputSlot);
+        if (input instanceof HTMLButtonElement) {
+            JSX.append(JSX.clear(input), selection);
+        }
+        else if (input instanceof HTMLInputElement) {
+            input.value = selection ? selection.innerText : '';
+        }
+    }
+    /**
+     * Updates the result element with any option found.
+     */
+    updateResultList() {
+        const result = JSX.clear(this.getRequiredChildElement(this.resultSlot));
+        const search = this.search;
+        this.activatedList = [];
+        for (const value in this.optionsMap) {
+            const options = this.optionsMap[value];
+            for (const option of options) {
+                let element = this.optionElementMap.get(option);
+                if (search.length === 0 || option.tags.find(tag => tag.includes(search))) {
+                    this.activatedList.push(option);
+                    if (option.group) {
+                        const group = this.groupsMap[option.group];
+                        if (group) {
+                            element = JSX.append(this.groupElementMap.get(group), element);
+                        }
+                        else {
+                            console.warn(`Option group '${option.group}' wasn't found.`);
+                        }
+                    }
+                    JSX.append(result, element);
+                }
+                else if (option.group) {
+                    element.remove();
+                }
+            }
+        }
+        if (this.selectedElement) {
+            this.selectedElement.scrollIntoView({ block: 'center' });
+        }
+        this.updatePropertyState('found', this.activatedList.length !== 0);
+    }
+    /**
+     * Renders a new option element for the specified option entity.
+     * @param option Option entity.
+     * @returns Returns the rendered option element.
+     */
+    renderOptionElement(option) {
+        const detail = { option: option, element: void 0 };
+        const event = new CustomEvent('renderoption', { bubbles: true, cancelable: true, detail: detail });
+        if (this.dispatchEvent(event)) {
+            return (JSX.create("div", { class: "option", onClick: this.optionClickHandler.bind(this, option) }, detail.element || option.label || option.value));
+        }
+        return void 0;
+    }
+    /**
+     * Renders a new selection result for the specified option entity.
+     * @param option Option entity.
+     * @returns Returns the rendered selection result.
+     */
+    renderSelectionElement(option) {
+        const detail = { option: option, element: void 0 };
+        const event = new CustomEvent('renderselection', { bubbles: true, cancelable: true, detail: detail });
+        if (this.dispatchEvent(event)) {
+            return JSX.create("div", { class: "selection" }, detail.element || option.label || option.value);
+        }
+        return void 0;
+    }
+    /**
+     * Renders a new group element for the specified group entity.
+     * @param group Group entity.
+     * @returns Returns the rendered group element.
+     */
+    renderGroupElement(group) {
+        const detail = { group: group, element: void 0 };
+        const event = new CustomEvent('rendergroup', { bubbles: true, cancelable: true, detail: detail });
+        if (this.dispatchEvent(event)) {
+            return JSX.create("div", { class: "group" }, detail.element || group.label);
+        }
+        return void 0;
+    }
+    /**
+     * Selects the element that corresponds to the specified option entity.
+     * @param option Option entity.
+     */
+    selectOption(option) {
+        if (this.selectedElement) {
+            delete this.selectedElement.dataset.selected;
+        }
+        this.selectedOption = option;
+        this.selectedElement = this.optionElementMap.get(option);
+        this.selectedElement.dataset.selected = '';
+        this.selectedElement.scrollIntoView();
+        this.setCustomValidity(!this.required || option.value.length ? '' : 'Please select a valid option.');
+        this.updateInputSelection(option);
+        this.updateValidation();
+    }
+    /**
+     * Selects the option that corresponds to the specified value.
+     * @param value Option value.
+     * @returns Returns true when an option was selected, false otherwise.
+     */
+    selectOptionByValue(value) {
+        const options = this.optionsMap[value];
+        if (options) {
+            const option = options[0];
+            if (option !== void 0) {
+                if (option !== this.selectedOption) {
+                    this.selectOption(option);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Selects the element that corresponds to the specified option and notifies the change.
+     * @param option Option entity.
+     * @returns Returns true when some option was selected, false otherwise.
+     */
+    selectOptionAndNotify(option) {
+        if (option !== this.selectedOption) {
+            const event = new Event('change', { bubbles: true, cancelable: true });
+            const saved = this.selectedOption;
+            this.selectOption(option);
+            if (!this.dispatchEvent(event)) {
+                if (saved) {
+                    this.selectOption(saved);
+                }
+                else {
+                    this.unselectOption();
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * Selects the previous option.
+     * @returns Returns true when some option was selected, false otherwise.
+     */
+    selectPreviousOptionAndNotify() {
+        const index = this.activatedList.indexOf(this.selectedOption);
+        const option = this.activatedList[(index - 1 > -1 ? index : this.activatedList.length) - 1];
+        return this.selectOptionAndNotify(option);
+    }
+    /**
+     * Selects the next option.
+     * @returns Returns true when some option was selected, false otherwise.
+     */
+    selectNextOptionAndNotify() {
+        const index = this.activatedList.indexOf(this.selectedOption);
+        const option = this.activatedList[index + 1 < this.activatedList.length ? index + 1 : 0];
+        return this.selectOptionAndNotify(option);
+    }
+    /**
+     * Selects the next first option that corresponds to the specified search.
+     * @param search Search value.
+     * @returns Returns true when some option was selected, false otherwise.
+     */
+    selectNextOptionBySearchAndNotify(search) {
+        let index = this.activatedList.indexOf(this.selectedOption);
+        for (let l = 0; l < this.activatedList.length; ++l) {
+            const option = this.activatedList[++index % this.activatedList.length];
+            if (option.tags.find(tag => tag.includes(search))) {
+                return this.selectOptionAndNotify(option);
+            }
+        }
+        return false;
+    }
+    /**
+     * Unselects the current selected option.
+     */
+    unselectOption() {
+        const input = this.getRequiredChildElement(this.inputSlot);
+        if (input instanceof HTMLButtonElement) {
+            JSX.append(JSX.clear(input), ...this.defaultNodes);
+        }
+        else if (input instanceof HTMLInputElement) {
+            input.value = this.defaultText;
+        }
+        delete this.selectedElement.dataset.selected;
+        this.selectedOption = void 0;
+        this.selectedElement = void 0;
+    }
+    /**
+     * Opens the option list result.
+     */
+    openList() {
+        if (this.searchable) {
+            const search = this.getRequiredChildElement(this.searchSlot);
+            if (search.reset instanceof Function) {
+                search.reset();
+            }
+            else if ('value' in search) {
+                search.value = search.defaultValue;
+            }
+            if (search.focus instanceof Function) {
+                search.focus();
+            }
+            this.canClose = false;
+        }
+        this.updateResultList();
+        this.updatePropertyState('opened', true);
+    }
+    /**
+     * Closes the option list result.
+     */
+    closeList() {
+        this.updatePropertyState('found', false);
+        this.updatePropertyState('opened', false);
+    }
+    /**
+     * Gets the normalized tag list based on the specified input tags.
+     * @param inputs Input tags.
+     * @returns Returns the generated tag list.
+     */
+    getTagList(inputs) {
+        const tags = [];
+        for (const input of inputs) {
+            if (input instanceof Element_1) {
+                tags.push(input.innerText.toLocaleLowerCase());
+            }
+            else if (input !== void 0) {
+                tags.push(input.toLocaleLowerCase());
+            }
+        }
+        return tags;
+    }
+    /**
+     * Option click, event handler.
+     * @param option Option entity.
+     */
+    optionClickHandler(option) {
+        this.closeListHandler();
+        this.selectOptionAndNotify(option);
+    }
+    /**
+     * Option keydown, event handler.
+     * @param event Event instance.
+     */
+    optionKeydownHandler(event) {
+        if (event.code === 'Space') {
+            if (this.open()) {
+                event.preventDefault();
+                this.focus();
+            }
+        }
+        else if (event.code === 'Enter') {
+            event.preventDefault();
+            this.toggleListHandler();
+        }
+        else if (event.code === 'Escape') {
+            event.preventDefault();
+            this.closeListHandler();
+        }
+        else if (event.code === 'ArrowUp') {
+            event.preventDefault();
+            this.selectPreviousOptionAndNotify();
+        }
+        else if (event.code === 'ArrowDown') {
+            event.preventDefault();
+            this.selectNextOptionAndNotify();
+        }
+        else if (!this.searchable && this.selectNextOptionBySearchAndNotify(event.key)) {
+            event.preventDefault();
+        }
+    }
+    /**
+     * Updates the current selection into the new input slot element.
+     */
+    slotChangeHandler() {
+        const input = this.getRequiredChildElement(this.inputSlot);
+        if (input instanceof HTMLButtonElement) {
+            this.defaultNodes = [];
+            for (const node of input.childNodes) {
+                this.defaultNodes.push(node);
+            }
+        }
+        else if (input instanceof HTMLInputElement) {
+            this.defaultText = input.value;
+            input.readOnly = true;
+        }
+        if (this.selectedOption) {
+            this.updateInputSelection(this.selectedOption);
+        }
+        this.updateValidation();
+    }
+    /**
+     * Prevent close, event handler.
+     */
+    preventCloseHandler() {
+        this.canClose = false;
+        this.focus();
+    }
+    /**
+     * Focus list, event handler.
+     */
+    focusListHandler() {
+        if (!this.opened) {
+            const event = new Event('focus', { bubbles: true, cancelable: true });
+            this.dispatchEvent(event);
+        }
+    }
+    /**
+     * Blur list, event handler.
+     */
+    blurListHandler() {
+        if (this.canClose) {
+            const event = new Event('blur', { bubbles: true, cancelable: true });
+            if (this.dispatchEvent(event)) {
+                this.close();
+            }
+        }
+        this.canClose = true;
+    }
+    /**
+     * Opens the list, event handler.
+     */
+    openListHandler() {
+        this.open();
+        this.focus();
+    }
+    /**
+     * Closes the list, event handler.
+     */
+    closeListHandler() {
+        this.focus();
+        this.close();
+    }
+    /**
+     * Toggles the list, event handler.
+     */
+    toggleListHandler() {
+        if (this.opened) {
+            this.closeListHandler();
+        }
+        else {
+            this.openListHandler();
+        }
+    }
+    /**
+     * Gets the selected option.
+     */
+    get selection() {
+        return this.selectedOption ? { ...this.selectedOption } : void 0;
+    }
+    /**
+     * Gets the current search text.
+     */
+    get search() {
+        return this.searchable ? this.getRequiredChildElement(this.searchSlot).value : '';
+    }
+    /**
+     * Gets the opened state.
+     */
+    get opened() {
+        return this.hasAttribute('opened');
+    }
+    /**
+     * Gets the options found state.
+     */
+    get found() {
+        return this.hasAttribute('found');
+    }
+    /**
+     * Gets the number of active options.
+     */
+    get count() {
+        return this.activatedList.length;
+    }
+    /**
+     * Determines whether the element is empty or not.
+     */
+    get empty() {
+        return this.selectedOption === void 0;
+    }
+    /**
+     * Gets the element name.
+     */
+    get name() {
+        return this.getAttribute('name') || '';
+    }
+    /**
+     * Sets the element name.
+     */
+    set name(name) {
+        this.setAttribute('name', name);
+        this.setRequiredChildProperty(this.inputSlot, 'name', name);
+    }
+    /**
+     * Gets the element value.
+     */
+    get value() {
+        return this.selectedOption ? this.selectedOption.value : void 0;
+    }
+    /**
+     * Sets the element value.
+     */
+    set value(value) {
+        if (value === void 0 || !this.selectOptionByValue(value)) {
+            if (this.selectedOption) {
+                this.unselectOption();
+                this.updateValidation();
+            }
+        }
+    }
+    /**
+     * Gets the searchable state of the element.
+     */
+    get searchable() {
+        return this.hasAttribute('searchable') && this.searchSlot.assignedNodes().length !== 0;
+    }
+    /**
+     * Sets the searchable state of the element.
+     */
+    set searchable(state) {
+        this.updatePropertyState('searchable', state);
+    }
+    /**
+     * Gets the required state of the element.
+     */
+    get required() {
+        return this.hasAttribute('required');
+    }
+    /**
+     * Sets the required state of the element.
+     */
+    set required(state) {
+        this.setRequiredChildProperty(this.inputSlot, 'required', state);
+        this.updatePropertyState('required', state);
+        this.updateValidation();
+    }
+    /**
+     * Gets the read-only state of the element.
+     */
+    get readOnly() {
+        return this.hasAttribute('readonly');
+    }
+    /**
+     * Sets the read-only state of the element.
+     */
+    set readOnly(state) {
+        this.updatePropertyState('readonly', state);
+    }
+    /**
+     * Gets the disabled state of the element.
+     */
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+    /**
+     * Sets the disabled state of the element.
+     */
+    set disabled(state) {
+        this.updatePropertyState('disabled', this.setRequiredChildProperty(this.inputSlot, 'disabled', state) && state);
+    }
+    /**
+     * Move the focus to this element.
+     */
+    focus() {
+        this.callRequiredChildMethod(this.searchable && this.opened ? this.searchSlot : this.inputSlot, 'focus', []);
+    }
+    /**
+     * Reset the element value to its initial value.
+     */
+    reset() {
+        this.value = this.defaultValue;
+    }
+    /**
+     * Checks the element validity.
+     * @returns Returns true when the element is valid, false otherwise.
+     */
+    checkValidity() {
+        return ((!this.required || (this.value !== void 0 && this.value.length !== 0)) &&
+            this.callRequiredChildMethod(this.inputSlot, 'checkValidity', []) !== false);
+    }
+    /**
+     * Sets the element custom validity error message.
+     * @param error Custom error message.
+     */
+    setCustomValidity(error) {
+        this.callRequiredChildMethod(this.inputSlot, 'setCustomValidity', [error]);
+    }
+    /**
+     * Adds the specified group into the groups list.
+     * @param name Group name.
+     * @param label Group label.
+     */
+    addGroup(name, label) {
+        const group = { name: name, label: label };
+        const element = this.renderGroupElement(group);
+        if (element) {
+            this.groupsMap[name] = group;
+            this.groupElementMap.set(group, element);
+            this.updateResultList();
+        }
+    }
+    /**
+     * Adds the specified option into the options list.
+     * @param value Option value.
+     * @param label Option label.
+     * @param data Option metadata.
+     * @returns Returns true when the option has been added, false otherwise.
+     */
+    addOption(value, label, data = {}) {
+        const option = {
+            value: value,
+            label: label,
+            group: data.group,
+            tags: this.getTagList(data.tags || [label]),
+            custom: data.custom || {}
+        };
+        const element = this.renderOptionElement(option);
+        if (element) {
+            if (!(this.optionsMap[value] instanceof Array)) {
+                this.optionsMap[value] = [];
+            }
+            this.optionsMap[value].push(option);
+            this.optionElementMap.set(option, element);
+            this.updateResultList();
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Remove all options that corresponds to the specified option value.
+     * @param value Option value.
+     * @returns Returns true when some option was removed or false otherwise.
+     */
+    removeOption(value) {
+        const options = this.optionsMap[value];
+        if (options) {
+            for (const option of options) {
+                this.optionElementMap.get(option).remove();
+            }
+            delete this.optionsMap[value];
+            this.updateResultList();
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Clear all options.
+     */
+    clear() {
+        if (this.selectedOption) {
+            this.unselectOption();
+            this.updateValidation();
+        }
+        for (const value in this.optionsMap) {
+            const options = this.optionsMap[value];
+            for (const option of options) {
+                this.optionElementMap.get(option).remove();
+            }
+        }
+        this.optionsMap = {};
+        this.updatePropertyState('found', false);
+        JSX.clear(this.getRequiredChildElement(this.resultSlot));
+    }
+    /**
+     * Opens the options list.
+     * @returns Returns true when the options list was closed, false otherwise.
+     */
+    open() {
+        if (!this.readOnly && !this.disabled && !this.opened) {
+            return this.openList(), true;
+        }
+        return false;
+    }
+    /**
+     * Closes the options list.
+     * @returns Returns true when the options list was closed, false otherwise.
+     */
+    close() {
+        if (this.opened) {
+            return this.closeList(), true;
+        }
+        return false;
+    }
+    /**
+     * Toggles the options list.
+     */
+    toggle() {
+        if (this.opened) {
+            this.closeList();
+        }
+        else {
+            this.openList();
+        }
+    }
+};
+__decorate([
+    Class.Private()
+], Element.prototype, "defaultText", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "defaultNodes", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "optionsMap", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "activatedList", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "groupsMap", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "groupElementMap", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "optionElementMap", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectedOption", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectedElement", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "canClose", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "styles", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "inputSlot", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "arrowSlot", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "searchSlot", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "resultSlot", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "emptySlot", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectLayout", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectStyles", void 0);
+__decorate([
+    Class.Private()
+], Element.prototype, "updateValidation", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "updateInputSelection", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "updateResultList", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "renderOptionElement", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "renderSelectionElement", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "renderGroupElement", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectOption", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectOptionByValue", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectOptionAndNotify", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectPreviousOptionAndNotify", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectNextOptionAndNotify", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "selectNextOptionBySearchAndNotify", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "unselectOption", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "openList", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "closeList", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "getTagList", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "optionClickHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "optionKeydownHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "slotChangeHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "preventCloseHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "focusListHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "blurListHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "openListHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "closeListHandler", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "toggleListHandler", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "selection", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "search", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "opened", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "found", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "count", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "empty", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "name", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "value", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "defaultValue", void 0);
+__decorate([
+    Class.Public()
+], Element.prototype, "searchable", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "required", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "readOnly", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "disabled", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "focus", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "reset", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "checkValidity", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "setCustomValidity", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "addGroup", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "addOption", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "removeOption", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "clear", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "open", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "close", null);
+__decorate([
+    Class.Public()
+], Element.prototype, "toggle", null);
+Element = Element_1 = __decorate([
+    JSX.Describe('swe-select'),
+    Class.Describe()
+], Element);
+exports.Element = Element;
+
+}},
+"@singleware/ui-select/index":{pack:false, invoke:function(exports, require){
+"use strict";
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+// Common exports.
+var component_1 = require("./component");
+exports.Component = component_1.Component;
+var element_1 = require("./element");
+exports.Element = element_1.Element;
+var stylesheet_1 = require("./stylesheet");
+exports.Stylesheet = stylesheet_1.Stylesheet;
+const Internals = require("./internals");
+exports.Internals = Internals;
+const Rendering = require("./rendering");
+exports.Rendering = Rendering;
+
+}},
+"@singleware/ui-select":{pack:true, invoke:function(exports, require){
+Object.assign(exports, require('index'));
+}},
+"@singleware/ui-select/internals/index":{pack:false, invoke:function(exports, require){
+"use strict";
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+
+}},
+"@singleware/ui-select/internals":{pack:true, invoke:function(exports, require){
+Object.assign(exports, require('index'));
+}},
+"@singleware/ui-select/rendering/index":{pack:false, invoke:function(exports, require){
+"use strict";
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+
+}},
+"@singleware/ui-select/rendering":{pack:true, invoke:function(exports, require){
+Object.assign(exports, require('index'));
+}},
+"@singleware/ui-select/stylesheet":{pack:false, invoke:function(exports, require){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+const Class = require("@singleware/class");
+const OSS = require("@singleware/oss");
+/**
+ * Select stylesheet class.
+ */
+let Stylesheet = class Stylesheet extends OSS.Stylesheet {
+    /**
+     * Default constructor.
+     */
+    constructor() {
+        super();
+        /**
+         * Select styles.
+         */
+        this.element = this.select(':host>.select');
+        /**
+         * Field styles.
+         */
+        this.field = this.select(':host(:not([opened]))>.select>.field');
+        /**
+         * Arrow styles.
+         */
+        this.arrow = this.select(':host>.select>.field>.arrow');
+        /**
+         * Slotted selection styles.
+         */
+        this.slottedSelection = this.select(':host>.select>.field>.input::slotted(*)');
+        /**
+         * Slotted input styles.
+         */
+        this.slottedInput = this.select(':host>.select>.field>.search::slotted(*)', ':host>.select>.field>.input::slotted(*)');
+        /**
+         * Slotted arrow styles.
+         */
+        this.slottedArrow = this.select(':host>.select>.field>.arrow::slotted(*)');
+        /**
+         * Slotted arrow styles.
+         */
+        this.slottedResults = this.select(':host>.select>.result::slotted(*)', ':host>.select>.empty::slotted(*)');
+        /**
+         * Slotted hidden styles.
+         */
+        this.slottedHidden = this.select(':host([searchable][opened])>.select>.field>.input::slotted(*)', ':host([searchable]:not([opened]))>.select>.field>.search::slotted(*)', ':host(:not([searchable]))>.select>.field>.search::slotted(*)', ':host(:not([searchable]))>.select>.empty::slotted(*)', ':host(:not([opened]))>.select>.result::slotted(*)', ':host(:not([found]))>.select>.result::slotted(*)', ':host(:not([opened]))>.select>.empty::slotted(*)', ':host([opened][found])>.select>.empty::slotted(*)');
+        this.element.display = 'flex';
+        this.element.position = 'relative';
+        this.element.flexDirection = 'column';
+        this.element.position = 'relative';
+        this.element.height = 'inherit';
+        this.element.width = 'inherit';
+        this.element.userSelect = 'none';
+        this.field.display = 'flex';
+        this.arrow.position = 'absolute';
+        this.arrow.top = '0';
+        this.arrow.bottom = '0';
+        this.arrow.right = '0';
+        this.slottedSelection.cursor = 'default';
+        this.slottedInput.textAlign = 'left';
+        this.slottedInput.width = '100%';
+        this.slottedArrow.position = 'absolute';
+        this.slottedArrow.top = '50%';
+        this.slottedArrow.right = '0.5rem';
+        this.slottedArrow.width = '0';
+        this.slottedArrow.height = '0';
+        this.slottedArrow.transform = 'translate(-50%,-50%)';
+        this.slottedArrow.borderLeft = '0.1875rem solid transparent';
+        this.slottedArrow.borderRight = this.slottedArrow.borderLeft;
+        this.slottedArrow.borderTop = '0.25rem solid black';
+        this.slottedResults.display = 'block';
+        this.slottedResults.position = 'absolute';
+        this.slottedResults.border = '0.0625rem solid black';
+        this.slottedResults.overflow = 'auto';
+        this.slottedResults.top = '100%';
+        this.slottedResults.width = '100%';
+        this.slottedResults.zIndex = 1;
+        this.slottedHidden.display = 'none';
+    }
+};
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "element", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "field", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "arrow", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "slottedSelection", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "slottedInput", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "slottedArrow", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "slottedResults", void 0);
+__decorate([
+    Class.Private()
+], Stylesheet.prototype, "slottedHidden", void 0);
+Stylesheet = __decorate([
+    Class.Describe()
+], Stylesheet);
+exports.Stylesheet = Stylesheet;
+
+}},
+"@singleware/ui-switch/index":{pack:false, invoke:function(exports, require){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+var template_1 = require("./template");
+exports.Template = template_1.Template;
+
+}},
+"@singleware/ui-switch":{pack:true, invoke:function(exports, require){
+Object.assign(exports, require('index'));
+}},
+"@singleware/ui-switch/template":{pack:false, invoke:function(exports, require){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Template_1;
+"use strict";
+/**
+ * Copyright (C) 2018 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+const Class = require("@singleware/class");
+const DOM = require("@singleware/jsx");
+const Control = require("@singleware/ui-control");
+/**
+ * Switch template class.
+ */
+let Template = Template_1 = class Template extends Control.Component {
+    /**
+     * Default constructor.
+     * @param properties Select properties.
+     * @param children Select children.
+     */
+    constructor(properties, children) {
+        super(properties, children);
+        /**
+         * Switch states.
+         */
+        this.states = {
+            name: '',
+            checkedValue: 'on',
+            uncheckedValue: 'off'
+        };
+        /**
+         * Input element.
+         */
+        this.input = DOM.create("input", { type: "checkbox" });
+        /**
+         * Yes mark element.
+         */
+        this.yesMarkSlot = DOM.create("slot", { name: "yes", class: "mark yes" });
+        /**
+         * No mark element.
+         */
+        this.noMarkSlot = DOM.create("slot", { name: "no", class: "mark no" });
+        /**
+         * Switch slider element.
+         */
+        this.slider = (DOM.create("div", { class: "slider" },
+            this.yesMarkSlot,
+            this.noMarkSlot));
+        /**
+         * Switch element.
+         */
+        this.switch = (DOM.create("label", { class: "switch" },
+            this.input,
+            this.slider));
+        /**
+         * Switch styles.
+         */
+        this.styles = (DOM.create("style", null, `:host > .switch > input {
+  position: absolute;
+  opacity: 0;
+}
+:host > .switch > input:not([disabled]):not([readonly]) ~ .slider {
+  cursor: pointer;
+}
+:host > .switch > .slider {
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+}
+:host > .switch > .slider > .mark {
+  position: relative;
+  display: inline-block;
+  min-width: 1em;
+  width: 100%;
+}
+:host > .switch > .slider > .yes {
+  text-align: left;
+  margin-left: -100%;
+}
+:host > .switch > .slider > .no {
+  text-align: right;
+}
+:host > .switch > .slider > .no::slotted(*) {
+  padding-right: 1rem;
+}
+:host > .switch > .slider > .no::slotted(*):before {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  width: 1.25em;
+  bottom: 0.25rem;
+  top: 0.25rem;
+  left: 0.25rem;
+  border: 0.0625rem solid black;
+  border-radius: 50%;
+}
+:host > .switch > input:checked ~ .slider > .yes {
+  margin-left: 0;
+}
+:host > .switch > input:checked ~ .slider > .yes::slotted(*) {
+  padding-left: 1rem;
+}
+:host > .switch > input:checked ~ .slider > .no::slotted(*):before {
+  left: auto;
+  right: 100%;
+  margin-right: 0.25rem;
+}`));
+        /**
+         * Switch skeleton.
+         */
+        this.skeleton = (DOM.create("div", { slot: this.properties.slot, class: this.properties.class }, this.children));
+        DOM.append(this.skeleton.attachShadow({ mode: 'closed' }), this.styles, this.switch);
+        this.bindHandlers();
+        this.bindProperties();
+        this.assignProperties();
+    }
+    /**
+     * Updates the specified property state.
+     * @param property Property name.
+     * @param state Property state.
+     */
+    updatePropertyState(property, state) {
+        if (state) {
+            this.skeleton.dataset[property] = 'on';
+        }
+        else {
+            delete this.skeleton.dataset[property];
+        }
+    }
+    /**
+     * Click event handler.
+     * @param event Event information.
+     */
+    clickHandler(event) {
+        if (this.input.readOnly) {
+            event.preventDefault();
+        }
+        else if (this.group) {
+            const last = Template_1.groups[this.group];
+            if (last !== this.skeleton) {
+                if (last) {
+                    last.checked = false;
+                    Template_1.notifyChanges(last);
+                }
+                this.updatePropertyState('checked', (this.input.checked = true));
+                Template_1.groups[this.group] = this.skeleton;
+                Template_1.notifyChanges(this.skeleton);
+            }
+        }
+        else {
+            this.updatePropertyState('checked', this.input.checked);
+            Template_1.notifyChanges(this.skeleton);
+        }
+    }
+    /**
+     * Bind event handlers to update the custom element.
+     */
+    bindHandlers() {
+        this.input.addEventListener('click', this.clickHandler.bind(this));
+    }
+    /**
+     * Bind exposed properties to the custom element.
+     */
+    bindProperties() {
+        this.bindComponentProperties(this.skeleton, [
+            'name',
+            'group',
+            'value',
+            'checked',
+            'defaultValue',
+            'defaultChecked',
+            'required',
+            'readOnly',
+            'disabled',
+            'checkedValue',
+            'uncheckedValue',
+            'reset'
+        ]);
+    }
+    /**
+     * Assign all element properties.
+     */
+    assignProperties() {
+        this.assignComponentProperties(this.properties, [
+            'name',
+            'group',
+            'checkedValue',
+            'uncheckedValue',
+            'value',
+            'checked',
+            'defaultValue',
+            'defaultChecked',
+            'required',
+            'readOnly',
+            'disabled'
+        ]);
+    }
+    /**
+     * Get switch name.
+     */
+    get name() {
+        return this.states.name;
+    }
+    /**
+     * Set switch name.
+     */
+    set name(name) {
+        this.states.name = name;
+    }
+    /**
+     * Get switch group.
+     */
+    get group() {
+        return this.input.name;
+    }
+    /**
+     * Set switch group.
+     */
+    set group(name) {
+        this.input.name = name;
+    }
+    /**
+     * Get switch value.
+     */
+    get value() {
+        return this.checked ? this.states.checkedValue : this.states.uncheckedValue;
+    }
+    /**
+     * Set switch value.
+     */
+    set value(value) {
+        this.checked = this.states.checkedValue === value;
+    }
+    /**
+     * Get checked state.
+     */
+    get checked() {
+        return this.input.checked;
+    }
+    /**
+     * Set checked state.
+     */
+    set checked(state) {
+        if (this.group) {
+            const last = Template_1.groups[this.group];
+            if (state) {
+                if (last && last !== this.skeleton) {
+                    last.checked = false;
+                }
+                Template_1.groups[this.group] = this.skeleton;
+            }
+            else if (last === this.skeleton) {
+                Template_1.groups[this.group] = void 0;
+            }
+        }
+        this.updatePropertyState('checked', (this.input.checked = state));
+    }
+    /**
+     * Gets the default switch value.
+     */
+    get defaultValue() {
+        return this.input.defaultValue;
+    }
+    /**
+     * Sets the default switch value.
+     */
+    set defaultValue(value) {
+        this.input.defaultValue = value;
+    }
+    /**
+     * Gets the default checked state.
+     */
+    get defaultChecked() {
+        return this.input.defaultChecked;
+    }
+    /**
+     * Sets the default checked state.
+     */
+    set defaultChecked(value) {
+        this.input.defaultChecked = value;
+    }
+    /**
+     * Get required state.
+     */
+    get required() {
+        return this.input.required;
+    }
+    /**
+     * Set required state.
+     */
+    set required(state) {
+        this.input.required = state;
+        this.updatePropertyState('required', state);
+    }
+    /**
+     * Get read-only state.
+     */
+    get readOnly() {
+        return this.input.readOnly;
+    }
+    /**
+     * Set read-only state.
+     */
+    set readOnly(state) {
+        this.input.readOnly = state;
+        this.updatePropertyState('readonly', state);
+    }
+    /**
+     * Get disabled state.
+     */
+    get disabled() {
+        return this.input.disabled;
+    }
+    /**
+     * Set disabled state.
+     */
+    set disabled(state) {
+        this.input.disabled = state;
+        this.updatePropertyState('disabled', state);
+    }
+    /**
+     * Gets the checked state value.
+     */
+    get checkedValue() {
+        return this.states.checkedValue;
+    }
+    /**
+     * Sets the checked state value.
+     */
+    set checkedValue(value) {
+        this.states.checkedValue = value;
+    }
+    /**
+     * Gets the unchecked state value.
+     */
+    get uncheckedValue() {
+        return this.states.uncheckedValue;
+    }
+    /**
+     * Sets the unchecked state value.
+     */
+    set uncheckedValue(value) {
+        this.states.uncheckedValue = value;
+    }
+    /**
+     * Switch element.
+     */
+    get element() {
+        return this.skeleton;
+    }
+    /**
+     * Reset the switch to its initial value and state.
+     */
+    reset() {
+        this.value = this.defaultValue;
+        this.checked = this.defaultChecked;
+    }
+    /**
+     * Notify element changes.
+     */
+    static notifyChanges(element) {
+        if (document.body.contains(element)) {
+            element.dispatchEvent(new Event('change', { bubbles: true, cancelable: false }));
+        }
+    }
+};
+/**
+ * Switch groups.
+ */
+Template.groups = {};
+__decorate([
+    Class.Private()
+], Template.prototype, "states", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "input", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "yesMarkSlot", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "noMarkSlot", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "slider", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "switch", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "styles", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "skeleton", void 0);
+__decorate([
+    Class.Private()
+], Template.prototype, "updatePropertyState", null);
+__decorate([
+    Class.Private()
+], Template.prototype, "clickHandler", null);
+__decorate([
+    Class.Private()
+], Template.prototype, "bindHandlers", null);
+__decorate([
+    Class.Private()
+], Template.prototype, "bindProperties", null);
+__decorate([
+    Class.Private()
+], Template.prototype, "assignProperties", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "name", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "group", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "value", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "checked", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "defaultValue", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "defaultChecked", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "required", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "readOnly", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "disabled", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "checkedValue", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "uncheckedValue", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "element", null);
+__decorate([
+    Class.Public()
+], Template.prototype, "reset", null);
+__decorate([
+    Class.Private()
+], Template, "groups", void 0);
+__decorate([
+    Class.Private()
+], Template, "notifyChanges", null);
+Template = Template_1 = __decorate([
+    Class.Describe()
+], Template);
+exports.Template = Template;
+
+}},
 "@singleware/ui-fieldset/component":{pack:false, invoke:function(exports, require){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6305,18 +8260,18 @@ let Component = class Component extends Control.Component {
         /**
          * Element instance.
          */
-        this.skeleton = (JSX.create("swe-popover", { class: this.properties.class, slot: this.properties.slot, name: this.properties.name, value: this.properties.value, defaultValue: this.properties.defaultValue, required: this.properties.required, readOnly: this.properties.readOnly, disabled: this.properties.disabled, dismiss: this.properties.dismiss, placement: this.properties.placement, alignment: this.properties.alignment }, this.children));
+        this.skeleton = (JSX.create("swe-popover", { class: this.properties.class, slot: this.properties.slot, name: this.properties.name, value: this.properties.value, defaultValue: this.properties.defaultValue, required: this.properties.required, readOnly: this.properties.readOnly, disabled: this.properties.disabled, dismiss: this.properties.dismiss, open: this.properties.open, placement: this.properties.placement, alignment: this.properties.alignment }, this.children));
         this.initialize();
     }
     /**
      * Initializes the component.
      */
     initialize() {
-        if (this.properties.onOpen) {
-            this.skeleton.addEventListener('open', this.properties.onOpen.bind(this));
+        if (this.properties.onShow) {
+            this.skeleton.addEventListener('show', this.properties.onShow.bind(this));
         }
-        if (this.properties.onClose) {
-            this.skeleton.addEventListener('close', this.properties.onClose.bind(this));
+        if (this.properties.onHide) {
+            this.skeleton.addEventListener('hide', this.properties.onHide.bind(this));
         }
     }
     /**
@@ -6324,12 +8279,6 @@ let Component = class Component extends Control.Component {
      */
     get element() {
         return this.skeleton;
-    }
-    /**
-     * Gets the opened state.
-     */
-    get opened() {
-        return this.skeleton.opened;
     }
     /**
      * Gets the empty state of the element.
@@ -6410,37 +8359,49 @@ let Component = class Component extends Control.Component {
         this.skeleton.disabled = state;
     }
     /**
-     * Gets the dismiss state of the element.
+     * Gets the open state.
+     */
+    get open() {
+        return this.skeleton.open;
+    }
+    /**
+     * Sets the open state.
+     */
+    set open(state) {
+        this.skeleton.open = state;
+    }
+    /**
+     * Gets the dismiss state.
      */
     get dismiss() {
         return this.skeleton.dismiss;
     }
     /**
-     * Sets the dismiss state of the element.
+     * Sets the dismiss state.
      */
     set dismiss(state) {
         this.skeleton.dismiss = state;
     }
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     get placement() {
         return this.skeleton.placement;
     }
     /**
-     * Sets the panel element placement.
+     * Sets the content element placement.
      */
     set placement(value) {
         this.skeleton.placement = value;
     }
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     get alignment() {
         return this.skeleton.alignment;
     }
     /**
-     * Sets the panel element alignment.
+     * Sets the content element alignment.
      */
     set alignment(value) {
         this.skeleton.alignment = value;
@@ -6458,21 +8419,21 @@ let Component = class Component extends Control.Component {
         this.skeleton.reset();
     }
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open() {
-        return this.skeleton.open();
+    show() {
+        return this.skeleton.show();
     }
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close() {
-        return this.skeleton.close();
+    hide() {
+        return this.skeleton.hide();
     }
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle() {
         this.skeleton.toggle();
@@ -6503,9 +8464,6 @@ __decorate([
 ], Component.prototype, "element", null);
 __decorate([
     Class.Public()
-], Component.prototype, "opened", null);
-__decorate([
-    Class.Public()
 ], Component.prototype, "empty", null);
 __decorate([
     Class.Public()
@@ -6527,6 +8485,9 @@ __decorate([
 ], Component.prototype, "disabled", null);
 __decorate([
     Class.Public()
+], Component.prototype, "open", null);
+__decorate([
+    Class.Public()
 ], Component.prototype, "dismiss", null);
 __decorate([
     Class.Public()
@@ -6542,10 +8503,10 @@ __decorate([
 ], Component.prototype, "reset", null);
 __decorate([
     Class.Public()
-], Component.prototype, "open", null);
+], Component.prototype, "show", null);
 __decorate([
     Class.Public()
-], Component.prototype, "close", null);
+], Component.prototype, "hide", null);
 __decorate([
     Class.Public()
 ], Component.prototype, "toggle", null);
@@ -6596,17 +8557,17 @@ let Element = Element_1 = class Element extends Control.Element {
         /**
          * Input slot element.
          */
-        this.inputSlot = JSX.create("slot", { name: "input", class: "input", onClick: this.toggleHandler.bind(this) });
+        this.inputSlot = JSX.create("slot", { name: "input", onClick: this.toggleHandler.bind(this) });
         /**
-         * Panel slot element.
+         * Content slot element.
          */
-        this.panelSlot = JSX.create("slot", { name: "panel", class: "panel", onClick: this.preventHandler.bind(this) });
+        this.contentSlot = JSX.create("slot", { name: "content", onClick: this.preventHandler.bind(this) });
         /**
          * Popover layout element.
          */
-        this.popoverLayout = (JSX.create("label", { class: "popover" },
+        this.popoverLayout = (JSX.create("label", null,
             this.inputSlot,
-            this.panelSlot));
+            this.contentSlot));
         /**
          * Popover styles element.
          */
@@ -6615,37 +8576,53 @@ let Element = Element_1 = class Element extends Control.Element {
         JSX.append(this.attachShadow({ mode: 'closed' }), this.popoverStyles, this.popoverLayout);
     }
     /**
-     * Opens the panel element.
+     * Shows the content element.
      */
-    openPanel() {
+    showContent() {
         Element_1.globalInstances.add(Class.resolve(this));
-        this.updatePropertyState('opened', true);
+        this.updatePropertyState('open', true);
     }
     /**
-     * Closes the panel element.
+     * Notifies the action and try to show the content element.
+     * @returns Returns true when the content element was shown, false otherwise.
      */
-    closePanel() {
-        Element_1.globalInstances.delete(Class.resolve(this));
-        this.updatePropertyState('opened', false);
+    notifyAndShowContent() {
+        if (this.dispatchEvent(new Event('show', { bubbles: true, cancelable: true }))) {
+            return this.showContent(), true;
+        }
+        return false;
     }
     /**
-     * Toggles the panel element, event handler.
+     * Hides the content element.
+     */
+    hideContent() {
+        Element_1.globalInstances.delete(Class.resolve(this));
+        this.updatePropertyState('open', false);
+    }
+    /**
+     * Notifies the action and try to hide the content element.
+     * @returns Returns true when the content element was hidden, false otherwise.
+     */
+    notifyAndHideContent() {
+        if (this.dispatchEvent(new Event('hide', { bubbles: true, cancelable: true }))) {
+            return this.hideContent(), true;
+        }
+        return false;
+    }
+    /**
+     * Toggles the content element, event handler.
      */
     toggleHandler() {
         Element_1.globalCurrent = Class.resolve(this);
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            if (this.dispatchEvent(new Event('open', { bubbles: true, cancelable: true }))) {
-                this.openPanel();
-            }
+        if (!this.open && !this.readOnly && !this.disabled) {
+            this.notifyAndShowContent();
         }
         else {
-            if (this.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }))) {
-                this.closePanel();
-            }
+            this.notifyAndHideContent();
         }
     }
     /**
-     * Prevent panel closing, event handler.
+     * Prevent content closing, event handler.
      */
     preventHandler() {
         if (!this.dismiss) {
@@ -6660,7 +8637,7 @@ let Element = Element_1 = class Element extends Control.Element {
         if (!event.defaultPrevented) {
             for (const element of this.globalInstances) {
                 if (this.globalCurrent !== element && element.dismiss) {
-                    element.closePanel();
+                    element.notifyAndHideContent();
                 }
             }
             this.globalCurrent = void 0;
@@ -6670,9 +8647,12 @@ let Element = Element_1 = class Element extends Control.Element {
      * Initializes all the global settings.
      */
     static globalInitialization() {
-        if (!this.globalSetup) {
+        if (!this.globalInstances) {
+            this.globalInstances = new Set();
             globalThis.addEventListener('click', this.globalPreventHandler.bind(this));
-            this.globalSetup = true;
+        }
+        if (!globalThis.document.head.contains(Element_1.globalStyles)) {
+            JSX.append(globalThis.document.head, Element_1.globalStyles);
         }
     }
     /**
@@ -6680,12 +8660,6 @@ let Element = Element_1 = class Element extends Control.Element {
      */
     get empty() {
         return this.getRequiredChildProperty(this.inputSlot, 'empty');
-    }
-    /**
-     * Gets the element opened state.
-     */
-    get opened() {
-        return this.hasAttribute('opened');
     }
     /**
      * Gets the slotted input element name.
@@ -6745,7 +8719,8 @@ let Element = Element_1 = class Element extends Control.Element {
      * Sets the element read-only state.
      */
     set readOnly(state) {
-        this.updatePropertyState('readonly', this.setRequiredChildProperty(this.inputSlot, 'readonly', state) && state);
+        this.setRequiredChildProperty(this.inputSlot, 'readonly', state);
+        this.updatePropertyState('readonly', state);
     }
     /**
      * Gets the element disabled state.
@@ -6757,7 +8732,20 @@ let Element = Element_1 = class Element extends Control.Element {
      * Sets the element disabled state.
      */
     set disabled(state) {
-        this.updatePropertyState('disabled', this.setRequiredChildProperty(this.inputSlot, 'disabled', state) && state);
+        this.setRequiredChildProperty(this.inputSlot, 'disabled', state);
+        this.updatePropertyState('disabled', state);
+    }
+    /**
+     * Gets the element open state.
+     */
+    get open() {
+        return this.hasAttribute('open');
+    }
+    /**
+     * Sets the element open state.
+     */
+    set open(state) {
+        this.updatePropertyState('open', state);
     }
     /**
      * Gets the element dismiss state.
@@ -6779,25 +8767,25 @@ let Element = Element_1 = class Element extends Control.Element {
         }
     }
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     get placement() {
         return this.getAttribute('placement') || 'bottom';
     }
     /**
-     * Sets the panel element placement.
+     * Sets the content element placement.
      */
     set placement(value) {
         this.updatePropertyState('placement', value);
     }
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     get alignment() {
         return this.getAttribute('alignment') || 'middle';
     }
     /**
-     * Sets the panel element alignment.
+     * Sets the content element alignment.
      */
     set alignment(value) {
         this.updatePropertyState('alignment', value);
@@ -6815,34 +8803,34 @@ let Element = Element_1 = class Element extends Control.Element {
         this.callRequiredChildMethod(this.inputSlot, 'reset', []);
     }
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open() {
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            return this.openPanel(), true;
+    show() {
+        if (!this.open && !this.readOnly && !this.disabled) {
+            return this.showContent(), true;
         }
         return false;
     }
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close() {
-        if (this.opened) {
-            return this.closePanel(), true;
+    hide() {
+        if (this.open) {
+            return this.hideContent(), true;
         }
         return false;
     }
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle() {
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            this.openPanel();
+        if (!this.open && !this.readOnly && !this.disabled) {
+            this.showContent();
         }
         else {
-            this.closePanel();
+            this.hideContent();
         }
     }
     /**
@@ -6861,13 +8849,9 @@ let Element = Element_1 = class Element extends Control.Element {
     }
 };
 /**
- * Determines whether the global setup was initialized or not.
+ * Global element styles.
  */
-Element.globalSetup = false;
-/**
- * Global set of element instances.
- */
-Element.globalInstances = new Set();
+Element.globalStyles = JSX.create("style", { type: "text/css" }, new Styles.Global().toString());
 __decorate([
     Class.Private()
 ], Element.prototype, "styles", void 0);
@@ -6876,7 +8860,7 @@ __decorate([
 ], Element.prototype, "inputSlot", void 0);
 __decorate([
     Class.Private()
-], Element.prototype, "panelSlot", void 0);
+], Element.prototype, "contentSlot", void 0);
 __decorate([
     Class.Private()
 ], Element.prototype, "popoverLayout", void 0);
@@ -6885,10 +8869,16 @@ __decorate([
 ], Element.prototype, "popoverStyles", void 0);
 __decorate([
     Class.Private()
-], Element.prototype, "openPanel", null);
+], Element.prototype, "showContent", null);
 __decorate([
     Class.Private()
-], Element.prototype, "closePanel", null);
+], Element.prototype, "notifyAndShowContent", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "hideContent", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "notifyAndHideContent", null);
 __decorate([
     Class.Private()
 ], Element.prototype, "toggleHandler", null);
@@ -6898,9 +8888,6 @@ __decorate([
 __decorate([
     Class.Public()
 ], Element.prototype, "empty", null);
-__decorate([
-    Class.Public()
-], Element.prototype, "opened", null);
 __decorate([
     Class.Public()
 ], Element.prototype, "name", null);
@@ -6921,6 +8908,9 @@ __decorate([
 ], Element.prototype, "disabled", null);
 __decorate([
     Class.Public()
+], Element.prototype, "open", null);
+__decorate([
+    Class.Public()
 ], Element.prototype, "dismiss", null);
 __decorate([
     Class.Public()
@@ -6936,10 +8926,10 @@ __decorate([
 ], Element.prototype, "reset", null);
 __decorate([
     Class.Public()
-], Element.prototype, "open", null);
+], Element.prototype, "show", null);
 __decorate([
     Class.Public()
-], Element.prototype, "close", null);
+], Element.prototype, "hide", null);
 __decorate([
     Class.Public()
 ], Element.prototype, "toggle", null);
@@ -6951,7 +8941,7 @@ __decorate([
 ], Element.prototype, "setCustomValidity", null);
 __decorate([
     Class.Private()
-], Element, "globalSetup", void 0);
+], Element, "globalStyles", void 0);
 __decorate([
     Class.Private()
 ], Element, "globalInstances", void 0);
@@ -6989,6 +8979,46 @@ exports.Styles = Styles;
 "@module":{pack:true, invoke:function(exports, require){
 Object.assign(exports, require('index'));
 }},
+"@module/styles/global":{pack:false, invoke:function(exports, require){
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/*!
+ * Copyright (C) 2018-2019 Silas B. Domingos
+ * This source code is licensed under the MIT License as described in the file LICENSE.
+ */
+const Class = require("@singleware/class");
+const OSS = require("@singleware/oss");
+/**
+ * Global popover, stylesheet class.
+ */
+let Global = class Global extends OSS.Stylesheet {
+    /**
+     * Default constructor.
+     */
+    constructor() {
+        super();
+        /**
+         * Popover styles.
+         */
+        this.popover = this.select('swe-popover');
+        this.popover.display = 'block';
+    }
+};
+__decorate([
+    Class.Private()
+], Global.prototype, "popover", void 0);
+Global = __decorate([
+    Class.Describe()
+], Global);
+exports.Global = Global;
+
+}},
 "@module/styles/index":{pack:false, invoke:function(exports, require){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -6996,6 +9026,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Copyright (C) 2018-2019 Silas B. Domingos
  * This source code is licensed under the MIT License as described in the file LICENSE.
  */
+var global_1 = require("./global");
+exports.Global = global_1.Global;
 var local_1 = require("./local");
 exports.Local = local_1.Local;
 
@@ -7019,7 +9051,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Class = require("@singleware/class");
 const OSS = require("@singleware/oss");
 /**
- * Popover local stylesheet class.
+ * Local popover, stylesheet class.
  */
 let Local = class Local extends OSS.Stylesheet {
     /**
@@ -7030,91 +9062,92 @@ let Local = class Local extends OSS.Stylesheet {
         /**
          * Popover styles.
          */
-        this.element = this.select(':host>.popover');
+        this.element = this.select(':host>label');
         /**
          * Slotted input styles.
          */
-        this.slottedInput = this.select(':host>.popover>.input::slotted(*)');
+        this.slottedInput = this.select(':host slot[name="input"]::slotted(*)');
         /**
-         * Slotted panel styles.
+         * Slotted content styles.
          */
-        this.slottedPanel = this.select(':host>.popover>.panel::slotted(*)');
+        this.slottedContent = this.select(':host slot[name="content"]::slotted(*)');
         /**
-         * Panel styles.
+         * Content styles.
          */
-        this.panel = this.select(':host>.popover>.panel');
+        this.content = this.select(':host slot[name="content"]');
         /**
-         * Hidden panel styles.
+         * Hidden content styles.
          */
-        this.hiddenPanel = this.select(':host(:not([opened]))>.popover>.panel');
+        this.hiddenContent = this.select(':host(:not([open])) slot[name="content"]');
         /**
-         * Top panel styles.
+         * Top content styles.
          */
-        this.topPanel = this.select(':host([placement="top"])>.popover>.panel');
+        this.topContent = this.select(':host([placement="top"]) slot[name="content"]');
         /**
-         * Right panel styles.
+         * Right content styles.
          */
-        this.rightPanel = this.select(':host([placement="right"])>.popover>.panel');
+        this.rightContent = this.select(':host([placement="right"]) slot[name="content"]');
         /**
-         * Bottom panel styles.
+         * Bottom content styles.
          */
-        this.bottomPanel = this.select(':host([placement="bottom"])>.popover>.panel', ':host(:not([placement]))>.popover>.panel');
+        this.bottomContent = this.select(':host([placement="bottom"]) slot[name="content"]', ':host(:not([placement])) slot[name="content"]');
         /**
-         * Left panel styles.
+         * Left content styles.
          */
-        this.leftPanel = this.select(':host([placement="left"])>.popover>.panel');
+        this.leftContent = this.select(':host([placement="left"]) slot[name="content"]');
         /**
-         * Start left and right panel styles.
+         * Start left and right content styles.
          */
-        this.startLeftRightPanel = this.select(':host([placement="left"][alignment="start"])>.popover>.panel', ':host([placement="right"][alignment="start"])>.popover>.panel', ':host([placement="left"]:not(alignment))>.popover>.panel', ':host([placement="right"]:not(alignment))>.popover>.panel');
+        this.startLeftRightContent = this.select(':host([placement="left"][alignment="start"]) slot[name="content"]', ':host([placement="right"][alignment="start"]) slot[name="content"]', ':host([placement="left"]:not(alignment)) slot[name="content"]', ':host([placement="right"]:not(alignment)) slot[name="content"]');
         /**
-         * Middle left and right panel styles.
+         * Middle left and right content styles.
          */
-        this.middleLeftRightPanel = this.select(':host([alignment="middle"][placement="left"])>.popover>.panel', ':host([alignment="middle"][placement="right"])>.popover>.panel');
+        this.middleLeftRightContent = this.select(':host([alignment="middle"][placement="left"]) slot[name="content"]', ':host([alignment="middle"][placement="right"]) slot[name="content"]');
         /**
-         * End left and right panel styles.
+         * End left and right content styles.
          */
-        this.endLeftRightPanel = this.select(':host([alignment="end"][placement="left"])>.popover>.panel', ':host([alignment="end"][placement="right"])>.popover>.panel');
+        this.endLeftRightContent = this.select(':host([alignment="end"][placement="left"]) slot[name="content"]', ':host([alignment="end"][placement="right"]) slot[name="content"]');
         /**
-         * Start top and bottom panel styles.
+         * Start top and bottom content styles.
          */
-        this.startTopBottomPanel = this.select(':host([placement="top"][alignment="start"])>.popover>.panel', ':host([placement="bottom"][alignment="start"])>.popover>.panel', ':host([placement="top"]:not(alignment))>.popover>.panel', ':host([placement="bottom"]:not(alignment))>.popover>.panel', ':host(:not([placement]):not(alignment))>.popover>.panel');
+        this.startTopBottomContent = this.select(':host([placement="top"][alignment="start"]) slot[name="content"]', ':host([placement="bottom"][alignment="start"]) slot[name="content"]', ':host([placement="top"]:not(alignment)) slot[name="content"]', ':host([placement="bottom"]:not(alignment)) slot[name="content"]', ':host(:not([placement]):not(alignment)) slot[name="content"]');
         /**
-         * Middle top and bottom panel styles.
+         * Middle top and bottom content styles.
          */
-        this.middleTopBottomPanel = this.select(':host([alignment="middle"][placement="top"])>.popover>.panel', ':host([alignment="middle"][placement="bottom"])>.popover>.panel', ':host([alignment="middle"]:not([placement]))>.popover>.panel');
+        this.middleTopBottomContent = this.select(':host([alignment="middle"][placement="top"]) slot[name="content"]', ':host([alignment="middle"][placement="bottom"]) slot[name="content"]', ':host([alignment="middle"]:not([placement])) slot[name="content"]');
         /**
-         * End top and bottom panel styles.
+         * End top and bottom content styles.
          */
-        this.endTopBottomPanel = this.select(':host([alignment="end"][placement="top"])>.popover>.panel', ':host([alignment="end"][placement="bottom"])>.popover>.panel', ':host([alignment="end"]:not([placement]))>.popover>.panel');
+        this.endTopBottomContent = this.select(':host([alignment="end"][placement="top"]) slot[name="content"]', ':host([alignment="end"][placement="bottom"]) slot[name="content"]', ':host([alignment="end"]:not([placement])) slot[name="content"]');
         this.element.display = 'flex';
         this.element.position = 'relative';
         this.element.flexDirection = 'column';
         this.element.position = 'relative';
-        this.element.height = 'inherit';
-        this.element.width = 'inherit';
         this.slottedInput.textAlign = 'left';
         this.slottedInput.width = '100%';
-        this.slottedPanel.border = 'var(--swe-popover-border-size, 0.0625rem) solid var(--swe-popover-border-color, hsl(0, 0%, 90%))';
-        this.panel.display = 'block';
-        this.panel.position = 'absolute';
-        this.panel.zIndex = 1;
-        this.hiddenPanel.display = 'none';
-        this.hiddenPanel.zIndex = 0;
-        this.topPanel.bottom = '100%';
-        this.rightPanel.left = '100%';
-        this.bottomPanel.top = '100%';
-        this.leftPanel.right = '100%';
-        this.startLeftRightPanel.top = '0';
-        this.middleLeftRightPanel.transform = 'translateY(-50%)';
-        this.middleLeftRightPanel.top = '50%';
-        this.endLeftRightPanel.transform = 'translateY(-100%)';
-        this.endLeftRightPanel.top = '100%';
-        this.startTopBottomPanel.left = '0';
-        this.middleTopBottomPanel.transform = 'translateX(-50%)';
-        this.middleTopBottomPanel.left = '50%';
-        this.endTopBottomPanel.transform = 'translateX(-100%)';
-        this.endTopBottomPanel.left = '100%';
+        this.slottedContent.borderRadius = 'var(--swe-popover-content-border-radius, var(--swe-border-radius, .25rem))';
+        this.slottedContent.borderWidth = 'var(--swe-popover-content-border-size, var(--swe-border-size, .0625rem))';
+        this.slottedContent.borderColor = 'var(--swe-popover-content-border-color, var(--swe-border-color, hsl(0, 0%, 80%)))';
+        this.slottedContent.borderStyle = 'solid';
+        this.content.display = 'block';
+        this.content.position = 'absolute';
+        this.content.zIndex = 1;
+        this.hiddenContent.display = 'none';
+        this.hiddenContent.zIndex = 0;
+        this.topContent.bottom = '100%';
+        this.rightContent.left = '100%';
+        this.bottomContent.top = '100%';
+        this.leftContent.right = '100%';
+        this.startLeftRightContent.top = '0';
+        this.middleLeftRightContent.transform = 'translateY(-50%)';
+        this.middleLeftRightContent.top = '50%';
+        this.endLeftRightContent.transform = 'translateY(-100%)';
+        this.endLeftRightContent.top = '100%';
+        this.startTopBottomContent.left = '0';
+        this.middleTopBottomContent.transform = 'translateX(-50%)';
+        this.middleTopBottomContent.left = '50%';
+        this.endTopBottomContent.transform = 'translateX(-100%)';
+        this.endTopBottomContent.left = '100%';
     }
 };
 __decorate([
@@ -7125,43 +9158,43 @@ __decorate([
 ], Local.prototype, "slottedInput", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "slottedPanel", void 0);
+], Local.prototype, "slottedContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "panel", void 0);
+], Local.prototype, "content", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "hiddenPanel", void 0);
+], Local.prototype, "hiddenContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "topPanel", void 0);
+], Local.prototype, "topContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "rightPanel", void 0);
+], Local.prototype, "rightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "bottomPanel", void 0);
+], Local.prototype, "bottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "leftPanel", void 0);
+], Local.prototype, "leftContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "startLeftRightPanel", void 0);
+], Local.prototype, "startLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "middleLeftRightPanel", void 0);
+], Local.prototype, "middleLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "endLeftRightPanel", void 0);
+], Local.prototype, "endLeftRightContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "startTopBottomPanel", void 0);
+], Local.prototype, "startTopBottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "middleTopBottomPanel", void 0);
+], Local.prototype, "middleTopBottomContent", void 0);
 __decorate([
     Class.Private()
-], Local.prototype, "endTopBottomPanel", void 0);
+], Local.prototype, "endTopBottomContent", void 0);
 Local = __decorate([
     Class.Describe()
 ], Local);
@@ -7290,6 +9323,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Class = require("@singleware/class");
 const JSX = require("@singleware/jsx");
 const Control = require("@singleware/ui-control");
+const Switch = require("@singleware/ui-switch");
+const Select = require("@singleware/ui-select");
 const Fieldset = require("@singleware/ui-fieldset");
 const Field = require("@singleware/ui-field");
 const Form = require("@singleware/ui-form");
@@ -7305,28 +9340,53 @@ let View = class View extends Control.Component {
     constructor(properties) {
         super(properties);
         /**
-         * Settings form.
+         * Test content.
          */
-        this.settingsForm = (JSX.create(Form.Component, { onSubmit: this.onSubmit.bind(this) },
-            JSX.create(Fieldset.Component, { slot: "header" },
-                JSX.create("h3", null, "Control")),
-            JSX.create(Field.Component, { slot: "content" },
-                JSX.create("label", { slot: "label" }, "Enabled"),
-                JSX.create("input", { slot: "center", name: "enabled", type: "checkbox", value: "true" })),
-            JSX.create(Fieldset.Component, { slot: "footer", type: "submit" },
-                JSX.create("button", { type: "submit", class: "button" }, "Apply"))));
+        this.content = (JSX.create(Test.Component, { dismiss: true, onShow: this.onShow.bind(this), onHide: this.onHide.bind(this) },
+            JSX.create("button", { slot: "input" }, "Input"),
+            JSX.create("div", { slot: "content" }, "Content")));
+        /**
+         * Open switch element.
+         */
+        this.openSwitch = (JSX.create(Switch.Template, { slot: "center", name: "open", checkedValue: true, uncheckedValue: false, value: this.content.open },
+            JSX.create("span", { slot: "yes" }, "Yes"),
+            JSX.create("span", { slot: "no" }, "No")));
         /**
          * Test controls.
          */
-        this.control = (JSX.create("div", null,
-            JSX.create("h2", null, "Controls"),
-            this.settingsForm));
-        /**
-         * Test content.
-         */
-        this.content = (JSX.create(Test.Component, { class: "popover" },
-            JSX.create("button", { slot: "input" }, "Popover input"),
-            JSX.create("div", { slot: "panel" }, "Popover panel")));
+        this.control = (JSX.create(Form.Component, { onSubmit: this.onSubmit.bind(this) },
+            JSX.create(Fieldset.Component, { slot: "header" },
+                JSX.create("h2", null, "Controls")),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Placement"),
+                JSX.create(Select.Component, { slot: "center", name: "placement", options: ['top', 'right', 'bottom', 'left'], value: this.content.placement },
+                    JSX.create("button", { slot: "input" }),
+                    JSX.create("div", { slot: "result" }))),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Alignment"),
+                JSX.create(Select.Component, { slot: "center", name: "alignment", options: ['begin', 'middle', 'end'], value: this.content.alignment },
+                    JSX.create("button", { slot: "input" }),
+                    JSX.create("div", { slot: "result" }))),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Dismiss"),
+                JSX.create(Switch.Template, { slot: "center", name: "dismiss", checkedValue: true, uncheckedValue: false, value: this.content.dismiss },
+                    JSX.create("span", { slot: "yes" }, "Yes"),
+                    JSX.create("span", { slot: "no" }, "No"))),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Open"),
+                this.openSwitch),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Disabled"),
+                JSX.create(Switch.Template, { slot: "center", name: "disabled", checkedValue: true, uncheckedValue: false, value: this.content.disabled },
+                    JSX.create("span", { slot: "yes" }, "Yes"),
+                    JSX.create("span", { slot: "no" }, "No"))),
+            JSX.create(Field.Component, { slot: "content" },
+                JSX.create("label", { slot: "label" }, "Read-only"),
+                JSX.create(Switch.Template, { slot: "center", name: "readOnly", checkedValue: true, uncheckedValue: false, value: this.content.readOnly },
+                    JSX.create("span", { slot: "yes" }, "Yes"),
+                    JSX.create("span", { slot: "no" }, "No"))),
+            JSX.create(Fieldset.Component, { slot: "footer", type: "submit" },
+                JSX.create("button", { type: "submit", class: "button" }, "Apply"))));
         /**
          * View element.
          */
@@ -7335,11 +9395,28 @@ let View = class View extends Control.Component {
             JSX.create("div", { class: "control" }, this.control)));
     }
     /**
+     * Show, event handler.
+     */
+    onShow() {
+        this.openSwitch.value = true;
+    }
+    /**
+     * Hide, event handler.
+     */
+    onHide() {
+        this.openSwitch.value = false;
+    }
+    /**
      * Submit, event handler.
      */
     onSubmit() {
-        const form = this.settingsForm.value;
-        this.content.disabled = Boolean(form.enabled);
+        const options = this.control.value;
+        this.content.placement = options.placement;
+        this.content.alignment = options.alignment;
+        this.content.dismiss = options.dismiss;
+        this.content.open = options.open;
+        this.content.disabled = options.disabled;
+        this.content.readOnly = options.readOnly;
     }
     /**
      * View element.
@@ -7350,16 +9427,22 @@ let View = class View extends Control.Component {
 };
 __decorate([
     Class.Private()
-], View.prototype, "settingsForm", void 0);
+], View.prototype, "content", void 0);
+__decorate([
+    Class.Private()
+], View.prototype, "openSwitch", void 0);
 __decorate([
     Class.Private()
 ], View.prototype, "control", void 0);
 __decorate([
     Class.Private()
-], View.prototype, "content", void 0);
+], View.prototype, "skeleton", void 0);
 __decorate([
     Class.Private()
-], View.prototype, "skeleton", void 0);
+], View.prototype, "onShow", null);
+__decorate([
+    Class.Private()
+], View.prototype, "onHide", null);
 __decorate([
     Class.Private()
 ], View.prototype, "onSubmit", null);

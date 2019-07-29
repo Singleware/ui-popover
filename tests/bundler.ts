@@ -13,6 +13,16 @@ Bundler.compile({
       package: true
     },
     {
+      name: '@singleware/ui-select',
+      path: './node_modules/@singleware/ui-select',
+      package: true
+    },
+    {
+      name: '@singleware/ui-switch',
+      path: './node_modules/@singleware/ui-switch',
+      package: true
+    },
+    {
       name: '@singleware/ui-fieldset',
       path: './node_modules/@singleware/ui-fieldset',
       package: true

@@ -31,6 +31,7 @@ export class Component<T extends Properties = Properties> extends Control.Compon
       readOnly={this.properties.readOnly}
       disabled={this.properties.disabled}
       dismiss={this.properties.dismiss}
+      open={this.properties.open}
       placement={this.properties.placement}
       alignment={this.properties.alignment}
     >
@@ -43,11 +44,11 @@ export class Component<T extends Properties = Properties> extends Control.Compon
    */
   @Class.Private()
   private initialize(): void {
-    if (this.properties.onOpen) {
-      this.skeleton.addEventListener('open', this.properties.onOpen.bind(this));
+    if (this.properties.onShow) {
+      this.skeleton.addEventListener('show', this.properties.onShow.bind(this));
     }
-    if (this.properties.onClose) {
-      this.skeleton.addEventListener('close', this.properties.onClose.bind(this));
+    if (this.properties.onHide) {
+      this.skeleton.addEventListener('hide', this.properties.onHide.bind(this));
     }
   }
 
@@ -67,14 +68,6 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   @Class.Public()
   public get element(): Element {
     return this.skeleton;
-  }
-
-  /**
-   * Gets the opened state.
-   */
-  @Class.Public()
-  public get opened(): boolean {
-    return this.skeleton.opened;
   }
 
   /**
@@ -176,7 +169,21 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   }
 
   /**
-   * Gets the dismiss state of the element.
+   * Gets the open state.
+   */
+  @Class.Public()
+  public get open(): boolean {
+    return this.skeleton.open;
+  }
+
+  /**
+   * Sets the open state.
+   */
+  public set open(state: boolean) {
+    this.skeleton.open = state;
+  }
+  /**
+   * Gets the dismiss state.
    */
   @Class.Public()
   public get dismiss(): boolean {
@@ -184,14 +191,14 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   }
 
   /**
-   * Sets the dismiss state of the element.
+   * Sets the dismiss state.
    */
   public set dismiss(state: boolean) {
     this.skeleton.dismiss = state;
   }
 
   /**
-   * Gets the panel element placement.
+   * Gets the content element placement.
    */
   @Class.Public()
   public get placement(): Types.Placements {
@@ -199,14 +206,14 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   }
 
   /**
-   * Sets the panel element placement.
+   * Sets the content element placement.
    */
   public set placement(value: Types.Placements) {
     this.skeleton.placement = value;
   }
 
   /**
-   * Gets the panel element alignment.
+   * Gets the content element alignment.
    */
   @Class.Public()
   public get alignment(): Types.Alignments {
@@ -214,7 +221,7 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   }
 
   /**
-   * Sets the panel element alignment.
+   * Sets the content element alignment.
    */
   public set alignment(value: Types.Alignments) {
     this.skeleton.alignment = value;
@@ -237,25 +244,25 @@ export class Component<T extends Properties = Properties> extends Control.Compon
   }
 
   /**
-   * Opens the panel.
-   * @returns Returns true when the panel was opened, false otherwise.
+   * Shows the content.
+   * @returns Returns true when the content was shown, false otherwise.
    */
   @Class.Public()
-  public open(): boolean {
-    return this.skeleton.open();
+  public show(): boolean {
+    return this.skeleton.show();
   }
 
   /**
-   * Closes the panel.
-   * @returns Returns true when the panel was closed, false otherwise.
+   * Hides the content.
+   * @returns Returns true when the content was hidden, false otherwise.
    */
   @Class.Public()
-  public close(): boolean {
-    return this.skeleton.close();
+  public hide(): boolean {
+    return this.skeleton.hide();
   }
 
   /**
-   * Toggles the panel.
+   * Toggles the content.
    */
   @Class.Public()
   public toggle(): void {

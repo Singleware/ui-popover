@@ -1,6 +1,6 @@
 import * as OSS from '@singleware/oss';
 /**
- * Popover local stylesheet class.
+ * Local popover, stylesheet class.
  */
 export declare class Local extends OSS.Stylesheet {
     /**
@@ -12,57 +12,57 @@ export declare class Local extends OSS.Stylesheet {
      */
     private slottedInput;
     /**
-     * Slotted panel styles.
+     * Slotted content styles.
      */
-    private slottedPanel;
+    private slottedContent;
     /**
-     * Panel styles.
+     * Content styles.
      */
-    private panel;
+    private content;
     /**
-     * Hidden panel styles.
+     * Hidden content styles.
      */
-    private hiddenPanel;
+    private hiddenContent;
     /**
-     * Top panel styles.
+     * Top content styles.
      */
-    private topPanel;
+    private topContent;
     /**
-     * Right panel styles.
+     * Right content styles.
      */
-    private rightPanel;
+    private rightContent;
     /**
-     * Bottom panel styles.
+     * Bottom content styles.
      */
-    private bottomPanel;
+    private bottomContent;
     /**
-     * Left panel styles.
+     * Left content styles.
      */
-    private leftPanel;
+    private leftContent;
     /**
-     * Start left and right panel styles.
+     * Start left and right content styles.
      */
-    private startLeftRightPanel;
+    private startLeftRightContent;
     /**
-     * Middle left and right panel styles.
+     * Middle left and right content styles.
      */
-    private middleLeftRightPanel;
+    private middleLeftRightContent;
     /**
-     * End left and right panel styles.
+     * End left and right content styles.
      */
-    private endLeftRightPanel;
+    private endLeftRightContent;
     /**
-     * Start top and bottom panel styles.
+     * Start top and bottom content styles.
      */
-    private startTopBottomPanel;
+    private startTopBottomContent;
     /**
-     * Middle top and bottom panel styles.
+     * Middle top and bottom content styles.
      */
-    private middleTopBottomPanel;
+    private middleTopBottomContent;
     /**
-     * End top and bottom panel styles.
+     * End top and bottom content styles.
      */
-    private endTopBottomPanel;
+    private endTopBottomContent;
     /**
      * Default constructor.
      */

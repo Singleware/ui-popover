@@ -27,18 +27,18 @@ let Component = class Component extends Control.Component {
         /**
          * Element instance.
          */
-        this.skeleton = (JSX.create("swe-popover", { class: this.properties.class, slot: this.properties.slot, name: this.properties.name, value: this.properties.value, defaultValue: this.properties.defaultValue, required: this.properties.required, readOnly: this.properties.readOnly, disabled: this.properties.disabled, dismiss: this.properties.dismiss, placement: this.properties.placement, alignment: this.properties.alignment }, this.children));
+        this.skeleton = (JSX.create("swe-popover", { class: this.properties.class, slot: this.properties.slot, name: this.properties.name, value: this.properties.value, defaultValue: this.properties.defaultValue, required: this.properties.required, readOnly: this.properties.readOnly, disabled: this.properties.disabled, dismiss: this.properties.dismiss, open: this.properties.open, placement: this.properties.placement, alignment: this.properties.alignment }, this.children));
         this.initialize();
     }
     /**
      * Initializes the component.
      */
     initialize() {
-        if (this.properties.onOpen) {
-            this.skeleton.addEventListener('open', this.properties.onOpen.bind(this));
+        if (this.properties.onShow) {
+            this.skeleton.addEventListener('show', this.properties.onShow.bind(this));
         }
-        if (this.properties.onClose) {
-            this.skeleton.addEventListener('close', this.properties.onClose.bind(this));
+        if (this.properties.onHide) {
+            this.skeleton.addEventListener('hide', this.properties.onHide.bind(this));
         }
     }
     /**
@@ -46,12 +46,6 @@ let Component = class Component extends Control.Component {
      */
     get element() {
         return this.skeleton;
-    }
-    /**
-     * Gets the opened state.
-     */
-    get opened() {
-        return this.skeleton.opened;
     }
     /**
      * Gets the empty state of the element.
@@ -132,37 +126,49 @@ let Component = class Component extends Control.Component {
         this.skeleton.disabled = state;
     }
     /**
-     * Gets the dismiss state of the element.
+     * Gets the open state.
+     */
+    get open() {
+        return this.skeleton.open;
+    }
+    /**
+     * Sets the open state.
+     */
+    set open(state) {
+        this.skeleton.open = state;
+    }
+    /**
+     * Gets the dismiss state.
      */
     get dismiss() {
         return this.skeleton.dismiss;
     }
     /**
-     * Sets the dismiss state of the element.
+     * Sets the dismiss state.
      */
     set dismiss(state) {
         this.skeleton.dismiss = state;
     }
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     get placement() {
         return this.skeleton.placement;
     }
     /**
-     * Sets the panel element placement.
+     * Sets the content element placement.
      */
     set placement(value) {
         this.skeleton.placement = value;
     }
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     get alignment() {
         return this.skeleton.alignment;
     }
     /**
-     * Sets the panel element alignment.
+     * Sets the content element alignment.
      */
     set alignment(value) {
         this.skeleton.alignment = value;
@@ -180,21 +186,21 @@ let Component = class Component extends Control.Component {
         this.skeleton.reset();
     }
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open() {
-        return this.skeleton.open();
+    show() {
+        return this.skeleton.show();
     }
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close() {
-        return this.skeleton.close();
+    hide() {
+        return this.skeleton.hide();
     }
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle() {
         this.skeleton.toggle();
@@ -225,9 +231,6 @@ __decorate([
 ], Component.prototype, "element", null);
 __decorate([
     Class.Public()
-], Component.prototype, "opened", null);
-__decorate([
-    Class.Public()
 ], Component.prototype, "empty", null);
 __decorate([
     Class.Public()
@@ -249,6 +252,9 @@ __decorate([
 ], Component.prototype, "disabled", null);
 __decorate([
     Class.Public()
+], Component.prototype, "open", null);
+__decorate([
+    Class.Public()
 ], Component.prototype, "dismiss", null);
 __decorate([
     Class.Public()
@@ -264,10 +270,10 @@ __decorate([
 ], Component.prototype, "reset", null);
 __decorate([
     Class.Public()
-], Component.prototype, "open", null);
+], Component.prototype, "show", null);
 __decorate([
     Class.Public()
-], Component.prototype, "close", null);
+], Component.prototype, "hide", null);
 __decorate([
     Class.Public()
 ], Component.prototype, "toggle", null);

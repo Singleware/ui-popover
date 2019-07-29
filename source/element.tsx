@@ -16,16 +16,16 @@ import * as Styles from './styles';
 @Class.Describe()
 export class Element extends Control.Element {
   /**
-   * Determines whether the global setup was initialized or not.
+   * Global element styles.
    */
   @Class.Private()
-  private static globalSetup = false;
+  private static globalStyles = <style type="text/css">{new Styles.Global().toString()}</style> as HTMLStyleElement;
 
   /**
    * Global set of element instances.
    */
   @Class.Private()
-  private static globalInstances = new Set<Element>();
+  private static globalInstances: Set<Element>;
 
   /**
    * Current element instance.
@@ -43,22 +43,22 @@ export class Element extends Control.Element {
    * Input slot element.
    */
   @Class.Private()
-  private inputSlot = <slot name="input" class="input" onClick={this.toggleHandler.bind(this)} /> as HTMLSlotElement;
+  private inputSlot = <slot name="input" onClick={this.toggleHandler.bind(this)} /> as HTMLSlotElement;
 
   /**
-   * Panel slot element.
+   * Content slot element.
    */
   @Class.Private()
-  private panelSlot = <slot name="panel" class="panel" onClick={this.preventHandler.bind(this)} /> as HTMLSlotElement;
+  private contentSlot = <slot name="content" onClick={this.preventHandler.bind(this)} /> as HTMLSlotElement;
 
   /**
    * Popover layout element.
    */
   @Class.Private()
   private popoverLayout = (
-    <label class="popover">
+    <label>
       {this.inputSlot}
-      {this.panelSlot}
+      {this.contentSlot}
     </label>
   ) as HTMLLabelElement;
 
@@ -69,42 +69,62 @@ export class Element extends Control.Element {
   private popoverStyles = <style type="text/css">{this.styles.toString()}</style> as HTMLStyleElement;
 
   /**
-   * Opens the panel element.
+   * Shows the content element.
    */
   @Class.Private()
-  private openPanel(): void {
+  private showContent(): void {
     Element.globalInstances.add(Class.resolve(this));
-    this.updatePropertyState('opened', true);
+    this.updatePropertyState('open', true);
   }
 
   /**
-   * Closes the panel element.
+   * Notifies the action and try to show the content element.
+   * @returns Returns true when the content element was shown, false otherwise.
    */
   @Class.Private()
-  private closePanel(): void {
-    Element.globalInstances.delete(Class.resolve(this));
-    this.updatePropertyState('opened', false);
+  private notifyAndShowContent(): boolean {
+    if (this.dispatchEvent(new Event('show', { bubbles: true, cancelable: true }))) {
+      return this.showContent(), true;
+    }
+    return false;
   }
 
   /**
-   * Toggles the panel element, event handler.
+   * Hides the content element.
+   */
+  @Class.Private()
+  private hideContent(): void {
+    Element.globalInstances.delete(Class.resolve(this));
+    this.updatePropertyState('open', false);
+  }
+
+  /**
+   * Notifies the action and try to hide the content element.
+   * @returns Returns true when the content element was hidden, false otherwise.
+   */
+  @Class.Private()
+  private notifyAndHideContent(): boolean {
+    if (this.dispatchEvent(new Event('hide', { bubbles: true, cancelable: true }))) {
+      return this.hideContent(), true;
+    }
+    return false;
+  }
+
+  /**
+   * Toggles the content element, event handler.
    */
   @Class.Private()
   private toggleHandler(): void {
     Element.globalCurrent = Class.resolve(this);
-    if (!this.opened && !this.readOnly && !this.disabled) {
-      if (this.dispatchEvent(new Event('open', { bubbles: true, cancelable: true }))) {
-        this.openPanel();
-      }
+    if (!this.open && !this.readOnly && !this.disabled) {
+      this.notifyAndShowContent();
     } else {
-      if (this.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }))) {
-        this.closePanel();
-      }
+      this.notifyAndHideContent();
     }
   }
 
   /**
-   * Prevent panel closing, event handler.
+   * Prevent content closing, event handler.
    */
   @Class.Private()
   private preventHandler(): void {
@@ -122,7 +142,7 @@ export class Element extends Control.Element {
     if (!event.defaultPrevented) {
       for (const element of this.globalInstances) {
         if (this.globalCurrent !== element && element.dismiss) {
-          element.closePanel();
+          element.notifyAndHideContent();
         }
       }
       this.globalCurrent = void 0;
@@ -134,9 +154,12 @@ export class Element extends Control.Element {
    */
   @Class.Private()
   private static globalInitialization(): void {
-    if (!this.globalSetup) {
+    if (!this.globalInstances) {
+      this.globalInstances = new Set<Element>();
       globalThis.addEventListener('click', this.globalPreventHandler.bind(this));
-      this.globalSetup = true;
+    }
+    if (!globalThis.document.head.contains(Element.globalStyles)) {
+      JSX.append(globalThis.document.head, Element.globalStyles);
     }
   }
 
@@ -155,14 +178,6 @@ export class Element extends Control.Element {
   @Class.Public()
   public get empty(): boolean {
     return this.getRequiredChildProperty(this.inputSlot, 'empty');
-  }
-
-  /**
-   * Gets the element opened state.
-   */
-  @Class.Public()
-  public get opened(): boolean {
-    return this.hasAttribute('opened');
   }
 
   /**
@@ -237,7 +252,8 @@ export class Element extends Control.Element {
    * Sets the element read-only state.
    */
   public set readOnly(state: boolean) {
-    this.updatePropertyState('readonly', this.setRequiredChildProperty(this.inputSlot, 'readonly', state) && state);
+    this.setRequiredChildProperty(this.inputSlot, 'readonly', state);
+    this.updatePropertyState('readonly', state);
   }
 
   /**
@@ -252,7 +268,23 @@ export class Element extends Control.Element {
    * Sets the element disabled state.
    */
   public set disabled(state: boolean) {
-    this.updatePropertyState('disabled', this.setRequiredChildProperty(this.inputSlot, 'disabled', state) && state);
+    this.setRequiredChildProperty(this.inputSlot, 'disabled', state);
+    this.updatePropertyState('disabled', state);
+  }
+
+  /**
+   * Gets the element open state.
+   */
+  @Class.Public()
+  public get open(): boolean {
+    return this.hasAttribute('open');
+  }
+
+  /**
+   * Sets the element open state.
+   */
+  public set open(state: boolean) {
+    this.updatePropertyState('open', state);
   }
 
   /**
@@ -277,7 +309,7 @@ export class Element extends Control.Element {
   }
 
   /**
-   * Gets the panel element placement.
+   * Gets the content element placement.
    */
   @Class.Public()
   public get placement(): Types.Placements {
@@ -285,14 +317,14 @@ export class Element extends Control.Element {
   }
 
   /**
-   * Sets the panel element placement.
+   * Sets the content element placement.
    */
   public set placement(value: Types.Placements) {
     this.updatePropertyState('placement', value);
   }
 
   /**
-   * Gets the panel element alignment.
+   * Gets the content element alignment.
    */
   @Class.Public()
   public get alignment(): Types.Alignments {
@@ -300,7 +332,7 @@ export class Element extends Control.Element {
   }
 
   /**
-   * Sets the panel element alignment.
+   * Sets the content element alignment.
    */
   public set alignment(value: Types.Alignments) {
     this.updatePropertyState('alignment', value);
@@ -323,38 +355,38 @@ export class Element extends Control.Element {
   }
 
   /**
-   * Opens the panel.
-   * @returns Returns true when the panel was opened, false otherwise.
+   * Shows the content.
+   * @returns Returns true when the content was shown, false otherwise.
    */
   @Class.Public()
-  public open(): boolean {
-    if (!this.opened && !this.readOnly && !this.disabled) {
-      return this.openPanel(), true;
+  public show(): boolean {
+    if (!this.open && !this.readOnly && !this.disabled) {
+      return this.showContent(), true;
     }
     return false;
   }
 
   /**
-   * Closes the panel.
-   * @returns Returns true when the panel was closed, false otherwise.
+   * Hides the content.
+   * @returns Returns true when the content was hidden, false otherwise.
    */
   @Class.Public()
-  public close(): boolean {
-    if (this.opened) {
-      return this.closePanel(), true;
+  public hide(): boolean {
+    if (this.open) {
+      return this.hideContent(), true;
     }
     return false;
   }
 
   /**
-   * Toggles the panel.
+   * Toggles the content.
    */
   @Class.Public()
   public toggle(): void {
-    if (!this.opened && !this.readOnly && !this.disabled) {
-      this.openPanel();
+    if (!this.open && !this.readOnly && !this.disabled) {
+      this.showContent();
     } else {
-      this.closePanel();
+      this.hideContent();
     }
   }
 

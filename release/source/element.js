@@ -32,17 +32,17 @@ let Element = Element_1 = class Element extends Control.Element {
         /**
          * Input slot element.
          */
-        this.inputSlot = JSX.create("slot", { name: "input", class: "input", onClick: this.toggleHandler.bind(this) });
+        this.inputSlot = JSX.create("slot", { name: "input", onClick: this.toggleHandler.bind(this) });
         /**
-         * Panel slot element.
+         * Content slot element.
          */
-        this.panelSlot = JSX.create("slot", { name: "panel", class: "panel", onClick: this.preventHandler.bind(this) });
+        this.contentSlot = JSX.create("slot", { name: "content", onClick: this.preventHandler.bind(this) });
         /**
          * Popover layout element.
          */
-        this.popoverLayout = (JSX.create("label", { class: "popover" },
+        this.popoverLayout = (JSX.create("label", null,
             this.inputSlot,
-            this.panelSlot));
+            this.contentSlot));
         /**
          * Popover styles element.
          */
@@ -51,37 +51,53 @@ let Element = Element_1 = class Element extends Control.Element {
         JSX.append(this.attachShadow({ mode: 'closed' }), this.popoverStyles, this.popoverLayout);
     }
     /**
-     * Opens the panel element.
+     * Shows the content element.
      */
-    openPanel() {
+    showContent() {
         Element_1.globalInstances.add(Class.resolve(this));
-        this.updatePropertyState('opened', true);
+        this.updatePropertyState('open', true);
     }
     /**
-     * Closes the panel element.
+     * Notifies the action and try to show the content element.
+     * @returns Returns true when the content element was shown, false otherwise.
      */
-    closePanel() {
-        Element_1.globalInstances.delete(Class.resolve(this));
-        this.updatePropertyState('opened', false);
+    notifyAndShowContent() {
+        if (this.dispatchEvent(new Event('show', { bubbles: true, cancelable: true }))) {
+            return this.showContent(), true;
+        }
+        return false;
     }
     /**
-     * Toggles the panel element, event handler.
+     * Hides the content element.
+     */
+    hideContent() {
+        Element_1.globalInstances.delete(Class.resolve(this));
+        this.updatePropertyState('open', false);
+    }
+    /**
+     * Notifies the action and try to hide the content element.
+     * @returns Returns true when the content element was hidden, false otherwise.
+     */
+    notifyAndHideContent() {
+        if (this.dispatchEvent(new Event('hide', { bubbles: true, cancelable: true }))) {
+            return this.hideContent(), true;
+        }
+        return false;
+    }
+    /**
+     * Toggles the content element, event handler.
      */
     toggleHandler() {
         Element_1.globalCurrent = Class.resolve(this);
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            if (this.dispatchEvent(new Event('open', { bubbles: true, cancelable: true }))) {
-                this.openPanel();
-            }
+        if (!this.open && !this.readOnly && !this.disabled) {
+            this.notifyAndShowContent();
         }
         else {
-            if (this.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }))) {
-                this.closePanel();
-            }
+            this.notifyAndHideContent();
         }
     }
     /**
-     * Prevent panel closing, event handler.
+     * Prevent content closing, event handler.
      */
     preventHandler() {
         if (!this.dismiss) {
@@ -96,7 +112,7 @@ let Element = Element_1 = class Element extends Control.Element {
         if (!event.defaultPrevented) {
             for (const element of this.globalInstances) {
                 if (this.globalCurrent !== element && element.dismiss) {
-                    element.closePanel();
+                    element.notifyAndHideContent();
                 }
             }
             this.globalCurrent = void 0;
@@ -106,9 +122,12 @@ let Element = Element_1 = class Element extends Control.Element {
      * Initializes all the global settings.
      */
     static globalInitialization() {
-        if (!this.globalSetup) {
+        if (!this.globalInstances) {
+            this.globalInstances = new Set();
             globalThis.addEventListener('click', this.globalPreventHandler.bind(this));
-            this.globalSetup = true;
+        }
+        if (!globalThis.document.head.contains(Element_1.globalStyles)) {
+            JSX.append(globalThis.document.head, Element_1.globalStyles);
         }
     }
     /**
@@ -116,12 +135,6 @@ let Element = Element_1 = class Element extends Control.Element {
      */
     get empty() {
         return this.getRequiredChildProperty(this.inputSlot, 'empty');
-    }
-    /**
-     * Gets the element opened state.
-     */
-    get opened() {
-        return this.hasAttribute('opened');
     }
     /**
      * Gets the slotted input element name.
@@ -181,7 +194,8 @@ let Element = Element_1 = class Element extends Control.Element {
      * Sets the element read-only state.
      */
     set readOnly(state) {
-        this.updatePropertyState('readonly', this.setRequiredChildProperty(this.inputSlot, 'readonly', state) && state);
+        this.setRequiredChildProperty(this.inputSlot, 'readonly', state);
+        this.updatePropertyState('readonly', state);
     }
     /**
      * Gets the element disabled state.
@@ -193,7 +207,20 @@ let Element = Element_1 = class Element extends Control.Element {
      * Sets the element disabled state.
      */
     set disabled(state) {
-        this.updatePropertyState('disabled', this.setRequiredChildProperty(this.inputSlot, 'disabled', state) && state);
+        this.setRequiredChildProperty(this.inputSlot, 'disabled', state);
+        this.updatePropertyState('disabled', state);
+    }
+    /**
+     * Gets the element open state.
+     */
+    get open() {
+        return this.hasAttribute('open');
+    }
+    /**
+     * Sets the element open state.
+     */
+    set open(state) {
+        this.updatePropertyState('open', state);
     }
     /**
      * Gets the element dismiss state.
@@ -215,25 +242,25 @@ let Element = Element_1 = class Element extends Control.Element {
         }
     }
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     get placement() {
         return this.getAttribute('placement') || 'bottom';
     }
     /**
-     * Sets the panel element placement.
+     * Sets the content element placement.
      */
     set placement(value) {
         this.updatePropertyState('placement', value);
     }
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     get alignment() {
         return this.getAttribute('alignment') || 'middle';
     }
     /**
-     * Sets the panel element alignment.
+     * Sets the content element alignment.
      */
     set alignment(value) {
         this.updatePropertyState('alignment', value);
@@ -251,34 +278,34 @@ let Element = Element_1 = class Element extends Control.Element {
         this.callRequiredChildMethod(this.inputSlot, 'reset', []);
     }
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open() {
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            return this.openPanel(), true;
+    show() {
+        if (!this.open && !this.readOnly && !this.disabled) {
+            return this.showContent(), true;
         }
         return false;
     }
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close() {
-        if (this.opened) {
-            return this.closePanel(), true;
+    hide() {
+        if (this.open) {
+            return this.hideContent(), true;
         }
         return false;
     }
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle() {
-        if (!this.opened && !this.readOnly && !this.disabled) {
-            this.openPanel();
+        if (!this.open && !this.readOnly && !this.disabled) {
+            this.showContent();
         }
         else {
-            this.closePanel();
+            this.hideContent();
         }
     }
     /**
@@ -297,13 +324,9 @@ let Element = Element_1 = class Element extends Control.Element {
     }
 };
 /**
- * Determines whether the global setup was initialized or not.
+ * Global element styles.
  */
-Element.globalSetup = false;
-/**
- * Global set of element instances.
- */
-Element.globalInstances = new Set();
+Element.globalStyles = JSX.create("style", { type: "text/css" }, new Styles.Global().toString());
 __decorate([
     Class.Private()
 ], Element.prototype, "styles", void 0);
@@ -312,7 +335,7 @@ __decorate([
 ], Element.prototype, "inputSlot", void 0);
 __decorate([
     Class.Private()
-], Element.prototype, "panelSlot", void 0);
+], Element.prototype, "contentSlot", void 0);
 __decorate([
     Class.Private()
 ], Element.prototype, "popoverLayout", void 0);
@@ -321,10 +344,16 @@ __decorate([
 ], Element.prototype, "popoverStyles", void 0);
 __decorate([
     Class.Private()
-], Element.prototype, "openPanel", null);
+], Element.prototype, "showContent", null);
 __decorate([
     Class.Private()
-], Element.prototype, "closePanel", null);
+], Element.prototype, "notifyAndShowContent", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "hideContent", null);
+__decorate([
+    Class.Private()
+], Element.prototype, "notifyAndHideContent", null);
 __decorate([
     Class.Private()
 ], Element.prototype, "toggleHandler", null);
@@ -334,9 +363,6 @@ __decorate([
 __decorate([
     Class.Public()
 ], Element.prototype, "empty", null);
-__decorate([
-    Class.Public()
-], Element.prototype, "opened", null);
 __decorate([
     Class.Public()
 ], Element.prototype, "name", null);
@@ -357,6 +383,9 @@ __decorate([
 ], Element.prototype, "disabled", null);
 __decorate([
     Class.Public()
+], Element.prototype, "open", null);
+__decorate([
+    Class.Public()
 ], Element.prototype, "dismiss", null);
 __decorate([
     Class.Public()
@@ -372,10 +401,10 @@ __decorate([
 ], Element.prototype, "reset", null);
 __decorate([
     Class.Public()
-], Element.prototype, "open", null);
+], Element.prototype, "show", null);
 __decorate([
     Class.Public()
-], Element.prototype, "close", null);
+], Element.prototype, "hide", null);
 __decorate([
     Class.Public()
 ], Element.prototype, "toggle", null);
@@ -387,7 +416,7 @@ __decorate([
 ], Element.prototype, "setCustomValidity", null);
 __decorate([
     Class.Private()
-], Element, "globalSetup", void 0);
+], Element, "globalStyles", void 0);
 __decorate([
     Class.Private()
 ], Element, "globalInstances", void 0);

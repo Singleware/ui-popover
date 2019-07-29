@@ -5,6 +5,8 @@
 import * as Class from '@singleware/class';
 import * as JSX from '@singleware/jsx';
 import * as Control from '@singleware/ui-control';
+import * as Switch from '@singleware/ui-switch';
+import * as Select from '@singleware/ui-select';
 import * as Fieldset from '@singleware/ui-fieldset';
 import * as Field from '@singleware/ui-field';
 import * as Form from '@singleware/ui-form';
@@ -17,17 +19,74 @@ import * as Test from '@module/index';
 @Class.Describe()
 export class View extends Control.Component<Control.Properties> {
   /**
-   * Settings form.
+   * Test content.
    */
   @Class.Private()
-  private settingsForm = (
+  private content = (
+    <Test.Component dismiss onShow={this.onShow.bind(this)} onHide={this.onHide.bind(this)}>
+      <button slot="input">Input</button>
+      <div slot="content">Content</div>
+    </Test.Component>
+  ) as Test.Element;
+
+  /**
+   * Open switch element.
+   */
+  @Class.Private()
+  private openSwitch = (
+    <Switch.Template slot="center" name="open" checkedValue={true} uncheckedValue={false} value={this.content.open}>
+      <span slot="yes">Yes</span>
+      <span slot="no">No</span>
+    </Switch.Template>
+  ) as Switch.Element;
+
+  /**
+   * Test controls.
+   */
+  @Class.Private()
+  private control = (
     <Form.Component onSubmit={this.onSubmit.bind(this)}>
       <Fieldset.Component slot="header">
-        <h3>Control</h3>
+        <h2>Controls</h2>
       </Fieldset.Component>
       <Field.Component slot="content">
-        <label slot="label">Enabled</label>
-        <input slot="center" name="enabled" type="checkbox" value="true" />
+        <label slot="label">Placement</label>
+        <Select.Component slot="center" name="placement" options={['top', 'right', 'bottom', 'left']} value={this.content.placement}>
+          <button slot="input"></button>
+          <div slot="result" />
+        </Select.Component>
+      </Field.Component>
+      <Field.Component slot="content">
+        <label slot="label">Alignment</label>
+        <Select.Component slot="center" name="alignment" options={['begin', 'middle', 'end']} value={this.content.alignment}>
+          <button slot="input"></button>
+          <div slot="result" />
+        </Select.Component>
+      </Field.Component>
+      <Field.Component slot="content">
+        <label slot="label">Dismiss</label>
+        <Switch.Template slot="center" name="dismiss" checkedValue={true} uncheckedValue={false} value={this.content.dismiss}>
+          <span slot="yes">Yes</span>
+          <span slot="no">No</span>
+        </Switch.Template>
+      </Field.Component>
+      <Field.Component slot="content">
+        <label slot="label">Open</label>
+        {this.openSwitch}
+      </Field.Component>
+      <Field.Component slot="content">
+        <label slot="label">Disabled</label>
+        <Switch.Template slot="center" name="disabled" checkedValue={true} uncheckedValue={false} value={this.content.disabled}>
+          <span slot="yes">Yes</span>
+          <span slot="no">No</span>
+        </Switch.Template>
+      </Field.Component>
+      <Field.Component slot="content">
+        <label slot="label">Read-only</label>
+        <Switch.Template slot="center" name="readOnly" checkedValue={true} uncheckedValue={false} value={this.content.readOnly}>
+          <span slot="yes">Yes</span>
+          <span slot="no">No</span>
+        </Switch.Template>
       </Field.Component>
       <Fieldset.Component slot="footer" type="submit">
         <button type="submit" class="button">
@@ -36,28 +95,6 @@ export class View extends Control.Component<Control.Properties> {
       </Fieldset.Component>
     </Form.Component>
   ) as Form.Element;
-
-  /**
-   * Test controls.
-   */
-  @Class.Private()
-  private control = (
-    <div>
-      <h2>Controls</h2>
-      {this.settingsForm}
-    </div>
-  ) as HTMLDivElement;
-
-  /**
-   * Test content.
-   */
-  @Class.Private()
-  private content = (
-    <Test.Component class="popover">
-      <button slot="input">Popover input</button>
-      <div slot="panel">Popover panel</div>
-    </Test.Component>
-  ) as Test.Element;
 
   /**
    * View element.
@@ -71,12 +108,33 @@ export class View extends Control.Component<Control.Properties> {
   ) as HTMLElement;
 
   /**
+   * Show, event handler.
+   */
+  @Class.Private()
+  private onShow(): void {
+    this.openSwitch.value = true;
+  }
+
+  /**
+   * Hide, event handler.
+   */
+  @Class.Private()
+  private onHide(): void {
+    this.openSwitch.value = false;
+  }
+
+  /**
    * Submit, event handler.
    */
   @Class.Private()
   private onSubmit(): void {
-    const form = this.settingsForm.value;
-    this.content.disabled = Boolean(form.enabled);
+    const options = this.control.value;
+    this.content.placement = options.placement;
+    this.content.alignment = options.alignment;
+    this.content.dismiss = options.dismiss;
+    this.content.open = options.open;
+    this.content.disabled = options.disabled;
+    this.content.readOnly = options.readOnly;
   }
 
   /**

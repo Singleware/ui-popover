@@ -5,9 +5,9 @@ import * as Types from './types';
  */
 export declare class Element extends Control.Element {
     /**
-     * Determines whether the global setup was initialized or not.
+     * Global element styles.
      */
-    private static globalSetup;
+    private static globalStyles;
     /**
      * Global set of element instances.
      */
@@ -25,9 +25,9 @@ export declare class Element extends Control.Element {
      */
     private inputSlot;
     /**
-     * Panel slot element.
+     * Content slot element.
      */
-    private panelSlot;
+    private contentSlot;
     /**
      * Popover layout element.
      */
@@ -37,19 +37,29 @@ export declare class Element extends Control.Element {
      */
     private popoverStyles;
     /**
-     * Opens the panel element.
+     * Shows the content element.
      */
-    private openPanel;
+    private showContent;
     /**
-     * Closes the panel element.
+     * Notifies the action and try to show the content element.
+     * @returns Returns true when the content element was shown, false otherwise.
      */
-    private closePanel;
+    private notifyAndShowContent;
     /**
-     * Toggles the panel element, event handler.
+     * Hides the content element.
+     */
+    private hideContent;
+    /**
+     * Notifies the action and try to hide the content element.
+     * @returns Returns true when the content element was hidden, false otherwise.
+     */
+    private notifyAndHideContent;
+    /**
+     * Toggles the content element, event handler.
      */
     private toggleHandler;
     /**
-     * Prevent panel closing, event handler.
+     * Prevent content closing, event handler.
      */
     private preventHandler;
     /**
@@ -69,10 +79,6 @@ export declare class Element extends Control.Element {
      * Determines whether the slotted input element is empty or not.
      */
     readonly empty: boolean;
-    /**
-     * Gets the element opened state.
-     */
-    readonly opened: boolean;
     /**
      * Gets the slotted input element name.
      */
@@ -116,6 +122,13 @@ export declare class Element extends Control.Element {
     */
     disabled: boolean;
     /**
+     * Gets the element open state.
+     */
+    /**
+    * Sets the element open state.
+    */
+    open: boolean;
+    /**
      * Gets the element dismiss state.
      */
     /**
@@ -123,17 +136,17 @@ export declare class Element extends Control.Element {
     */
     dismiss: boolean;
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     /**
-    * Sets the panel element placement.
+    * Sets the content element placement.
     */
     placement: Types.Placements;
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     /**
-    * Sets the panel element alignment.
+    * Sets the content element alignment.
     */
     alignment: Types.Alignments;
     /**
@@ -145,17 +158,17 @@ export declare class Element extends Control.Element {
      */
     reset(): void;
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open(): boolean;
+    show(): boolean;
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close(): boolean;
+    hide(): boolean;
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle(): void;
     /**

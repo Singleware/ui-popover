@@ -6,7 +6,7 @@ import * as Class from '@singleware/class';
 import * as OSS from '@singleware/oss';
 
 /**
- * Popover local stylesheet class.
+ * Local popover, stylesheet class.
  */
 @Class.Describe()
 export class Local extends OSS.Stylesheet {
@@ -14,115 +14,115 @@ export class Local extends OSS.Stylesheet {
    * Popover styles.
    */
   @Class.Private()
-  private element = this.select(':host>.popover');
+  private element = this.select(':host>label');
 
   /**
    * Slotted input styles.
    */
   @Class.Private()
-  private slottedInput = this.select(':host>.popover>.input::slotted(*)');
+  private slottedInput = this.select(':host slot[name="input"]::slotted(*)');
 
   /**
-   * Slotted panel styles.
+   * Slotted content styles.
    */
   @Class.Private()
-  private slottedPanel = this.select(':host>.popover>.panel::slotted(*)');
+  private slottedContent = this.select(':host slot[name="content"]::slotted(*)');
 
   /**
-   * Panel styles.
+   * Content styles.
    */
   @Class.Private()
-  private panel = this.select(':host>.popover>.panel');
+  private content = this.select(':host slot[name="content"]');
 
   /**
-   * Hidden panel styles.
+   * Hidden content styles.
    */
   @Class.Private()
-  private hiddenPanel = this.select(':host(:not([opened]))>.popover>.panel');
+  private hiddenContent = this.select(':host(:not([open])) slot[name="content"]');
 
   /**
-   * Top panel styles.
+   * Top content styles.
    */
   @Class.Private()
-  private topPanel = this.select(':host([placement="top"])>.popover>.panel');
+  private topContent = this.select(':host([placement="top"]) slot[name="content"]');
 
   /**
-   * Right panel styles.
+   * Right content styles.
    */
   @Class.Private()
-  private rightPanel = this.select(':host([placement="right"])>.popover>.panel');
+  private rightContent = this.select(':host([placement="right"]) slot[name="content"]');
 
   /**
-   * Bottom panel styles.
+   * Bottom content styles.
    */
   @Class.Private()
-  private bottomPanel = this.select(':host([placement="bottom"])>.popover>.panel', ':host(:not([placement]))>.popover>.panel');
+  private bottomContent = this.select(':host([placement="bottom"]) slot[name="content"]', ':host(:not([placement])) slot[name="content"]');
 
   /**
-   * Left panel styles.
+   * Left content styles.
    */
   @Class.Private()
-  private leftPanel = this.select(':host([placement="left"])>.popover>.panel');
+  private leftContent = this.select(':host([placement="left"]) slot[name="content"]');
 
   /**
-   * Start left and right panel styles.
+   * Start left and right content styles.
    */
   @Class.Private()
-  private startLeftRightPanel = this.select(
-    ':host([placement="left"][alignment="start"])>.popover>.panel',
-    ':host([placement="right"][alignment="start"])>.popover>.panel',
-    ':host([placement="left"]:not(alignment))>.popover>.panel',
-    ':host([placement="right"]:not(alignment))>.popover>.panel'
+  private startLeftRightContent = this.select(
+    ':host([placement="left"][alignment="start"]) slot[name="content"]',
+    ':host([placement="right"][alignment="start"]) slot[name="content"]',
+    ':host([placement="left"]:not(alignment)) slot[name="content"]',
+    ':host([placement="right"]:not(alignment)) slot[name="content"]'
   );
 
   /**
-   * Middle left and right panel styles.
+   * Middle left and right content styles.
    */
   @Class.Private()
-  private middleLeftRightPanel = this.select(
-    ':host([alignment="middle"][placement="left"])>.popover>.panel',
-    ':host([alignment="middle"][placement="right"])>.popover>.panel'
+  private middleLeftRightContent = this.select(
+    ':host([alignment="middle"][placement="left"]) slot[name="content"]',
+    ':host([alignment="middle"][placement="right"]) slot[name="content"]'
   );
 
   /**
-   * End left and right panel styles.
+   * End left and right content styles.
    */
   @Class.Private()
-  private endLeftRightPanel = this.select(
-    ':host([alignment="end"][placement="left"])>.popover>.panel',
-    ':host([alignment="end"][placement="right"])>.popover>.panel'
+  private endLeftRightContent = this.select(
+    ':host([alignment="end"][placement="left"]) slot[name="content"]',
+    ':host([alignment="end"][placement="right"]) slot[name="content"]'
   );
 
   /**
-   * Start top and bottom panel styles.
+   * Start top and bottom content styles.
    */
   @Class.Private()
-  private startTopBottomPanel = this.select(
-    ':host([placement="top"][alignment="start"])>.popover>.panel',
-    ':host([placement="bottom"][alignment="start"])>.popover>.panel',
-    ':host([placement="top"]:not(alignment))>.popover>.panel',
-    ':host([placement="bottom"]:not(alignment))>.popover>.panel',
-    ':host(:not([placement]):not(alignment))>.popover>.panel'
+  private startTopBottomContent = this.select(
+    ':host([placement="top"][alignment="start"]) slot[name="content"]',
+    ':host([placement="bottom"][alignment="start"]) slot[name="content"]',
+    ':host([placement="top"]:not(alignment)) slot[name="content"]',
+    ':host([placement="bottom"]:not(alignment)) slot[name="content"]',
+    ':host(:not([placement]):not(alignment)) slot[name="content"]'
   );
 
   /**
-   * Middle top and bottom panel styles.
+   * Middle top and bottom content styles.
    */
   @Class.Private()
-  private middleTopBottomPanel = this.select(
-    ':host([alignment="middle"][placement="top"])>.popover>.panel',
-    ':host([alignment="middle"][placement="bottom"])>.popover>.panel',
-    ':host([alignment="middle"]:not([placement]))>.popover>.panel'
+  private middleTopBottomContent = this.select(
+    ':host([alignment="middle"][placement="top"]) slot[name="content"]',
+    ':host([alignment="middle"][placement="bottom"]) slot[name="content"]',
+    ':host([alignment="middle"]:not([placement])) slot[name="content"]'
   );
 
   /**
-   * End top and bottom panel styles.
+   * End top and bottom content styles.
    */
   @Class.Private()
-  private endTopBottomPanel = this.select(
-    ':host([alignment="end"][placement="top"])>.popover>.panel',
-    ':host([alignment="end"][placement="bottom"])>.popover>.panel',
-    ':host([alignment="end"]:not([placement]))>.popover>.panel'
+  private endTopBottomContent = this.select(
+    ':host([alignment="end"][placement="top"]) slot[name="content"]',
+    ':host([alignment="end"][placement="bottom"]) slot[name="content"]',
+    ':host([alignment="end"]:not([placement])) slot[name="content"]'
   );
 
   /**
@@ -134,29 +134,30 @@ export class Local extends OSS.Stylesheet {
     this.element.position = 'relative';
     this.element.flexDirection = 'column';
     this.element.position = 'relative';
-    this.element.height = 'inherit';
-    this.element.width = 'inherit';
     this.slottedInput.textAlign = 'left';
     this.slottedInput.width = '100%';
-    this.slottedPanel.border = 'var(--swe-popover-border-size, 0.0625rem) solid var(--swe-popover-border-color, hsl(0, 0%, 90%))';
-    this.panel.display = 'block';
-    this.panel.position = 'absolute';
-    this.panel.zIndex = 1;
-    this.hiddenPanel.display = 'none';
-    this.hiddenPanel.zIndex = 0;
-    this.topPanel.bottom = '100%';
-    this.rightPanel.left = '100%';
-    this.bottomPanel.top = '100%';
-    this.leftPanel.right = '100%';
-    this.startLeftRightPanel.top = '0';
-    this.middleLeftRightPanel.transform = 'translateY(-50%)';
-    this.middleLeftRightPanel.top = '50%';
-    this.endLeftRightPanel.transform = 'translateY(-100%)';
-    this.endLeftRightPanel.top = '100%';
-    this.startTopBottomPanel.left = '0';
-    this.middleTopBottomPanel.transform = 'translateX(-50%)';
-    this.middleTopBottomPanel.left = '50%';
-    this.endTopBottomPanel.transform = 'translateX(-100%)';
-    this.endTopBottomPanel.left = '100%';
+    this.slottedContent.borderRadius = 'var(--swe-popover-content-border-radius, var(--swe-border-radius, .25rem))';
+    this.slottedContent.borderWidth = 'var(--swe-popover-content-border-size, var(--swe-border-size, .0625rem))';
+    this.slottedContent.borderColor = 'var(--swe-popover-content-border-color, var(--swe-border-color, hsl(0, 0%, 80%)))';
+    this.slottedContent.borderStyle = 'solid';
+    this.content.display = 'block';
+    this.content.position = 'absolute';
+    this.content.zIndex = 1;
+    this.hiddenContent.display = 'none';
+    this.hiddenContent.zIndex = 0;
+    this.topContent.bottom = '100%';
+    this.rightContent.left = '100%';
+    this.bottomContent.top = '100%';
+    this.leftContent.right = '100%';
+    this.startLeftRightContent.top = '0';
+    this.middleLeftRightContent.transform = 'translateY(-50%)';
+    this.middleLeftRightContent.top = '50%';
+    this.endLeftRightContent.transform = 'translateY(-100%)';
+    this.endLeftRightContent.top = '100%';
+    this.startTopBottomContent.left = '0';
+    this.middleTopBottomContent.transform = 'translateX(-50%)';
+    this.middleTopBottomContent.left = '50%';
+    this.endTopBottomContent.transform = 'translateX(-100%)';
+    this.endTopBottomContent.left = '100%';
   }
 }

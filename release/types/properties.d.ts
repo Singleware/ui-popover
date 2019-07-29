@@ -45,6 +45,10 @@ export interface Properties {
    */
   dismiss?: boolean;
   /**
+   * Determines whether the popover starts open or not.
+   */
+  open?: boolean;
+  /**
    * Determines which placement the popover should have.
    */
   placement?: Types.Placements;
@@ -57,11 +61,11 @@ export interface Properties {
    */
   children?: {};
   /**
-   * Open event.
+   * Show event.
    */
-  onOpen?: (event: Event) => void;
+  onShow?: (event: Event) => void;
   /**
-   * Close event.
+   * Hide event.
    */
-  onClose?: (event: Event) => void;
+  onHide?: (event: Event) => void;
 }

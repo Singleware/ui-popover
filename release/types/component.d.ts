@@ -25,10 +25,6 @@ export declare class Component<T extends Properties = Properties> extends Contro
      */
     readonly element: Element;
     /**
-     * Gets the opened state.
-     */
-    readonly opened: boolean;
-    /**
      * Gets the empty state of the element.
      */
     readonly empty: boolean;
@@ -75,24 +71,31 @@ export declare class Component<T extends Properties = Properties> extends Contro
     */
     disabled: boolean;
     /**
-     * Gets the dismiss state of the element.
+     * Gets the open state.
      */
     /**
-    * Sets the dismiss state of the element.
+    * Sets the open state.
+    */
+    open: boolean;
+    /**
+     * Gets the dismiss state.
+     */
+    /**
+    * Sets the dismiss state.
     */
     dismiss: boolean;
     /**
-     * Gets the panel element placement.
+     * Gets the content element placement.
      */
     /**
-    * Sets the panel element placement.
+    * Sets the content element placement.
     */
     placement: Types.Placements;
     /**
-     * Gets the panel element alignment.
+     * Gets the content element alignment.
      */
     /**
-    * Sets the panel element alignment.
+    * Sets the content element alignment.
     */
     alignment: Types.Alignments;
     /**
@@ -104,17 +107,17 @@ export declare class Component<T extends Properties = Properties> extends Contro
      */
     reset(): void;
     /**
-     * Opens the panel.
-     * @returns Returns true when the panel was opened, false otherwise.
+     * Shows the content.
+     * @returns Returns true when the content was shown, false otherwise.
      */
-    open(): boolean;
+    show(): boolean;
     /**
-     * Closes the panel.
-     * @returns Returns true when the panel was closed, false otherwise.
+     * Hides the content.
+     * @returns Returns true when the content was hidden, false otherwise.
      */
-    close(): boolean;
+    hide(): boolean;
     /**
-     * Toggles the panel.
+     * Toggles the content.
      */
     toggle(): void;
     /**

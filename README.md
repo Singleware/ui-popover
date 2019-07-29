@@ -1,72 +1,99 @@
 # UI-Popover
 
-Custom HTML element used to wrap most essential actions for a popover component.
+Custom HTML element used to wrap a simple popover, composed by the slots: input and content.
+[See demo](//singleware.github.io/ui-popover/)
 
-### Automatic Attributes
+## Usage
 
-| Name   | Description                                        |
-| ------ | -------------------------------------------------- |
-| opened | Automatically assigned when the panel is displayed |
+Instantiate the component that initializes the custom element.
 
-### Mirrored Properties
+```tsx
+import * as JSX from '@singleware/jsx';
+import * as Popover from '@singleware/ui-popover';
 
-| Name         | Description                                                 |
-| ------------ | ----------------------------------------------------------- |
-| name         | Get and set the `name` of the slotted input element         |
-| value        | Get and set the `value` of the slotted input element        |
-| defaultValue | Get and set the `defaultValue` of the slotted input element |
-| required     | Get and set the `required` state in the input slot element  |
-| readOnly     | Get and set the `readOnly` state in the input slot element  |
-| disabled     | Get and set the `disabled` state in the input slot element  |
+const component = (
+  <Popover.Component dismiss>
+    <button slot="input">Input</button>
+    <div slot="content">Content</div>
+  </Popover.Component>
+) as Popover.Element;
+```
+
+Show, Hide and Toggle programmatically.
+
+```tsx
+component.show();
+component.hide();
+component.toggle();
+```
+
+Be informed about the component actions.
+
+```tsx
+component.addEventListener('show', (event: Event) => console.log(`Yes! It's visible now.`));
+component.addEventListener('hide', (event: Event) => console.log(`No! It's hidden now.`));
+```
+
+## Help
+
+### Attributes
+
+| Name    | Description                                                              |
+| ------- | ------------------------------------------------------------------------ |
+| dismiss | Assigned when the content can be hidden by clicking anywhere             |
+| open    | Automatically assigned when the content is shown and removed when hidden |
 
 ### Properties
 
-| Name         | Description                                                               |
-| ------------ | ------------------------------------------------------------------------- |
-| opened       | Get the current opened state                                              |
-| empty        | Get the current empty state                                               |
-| name         | Get the current element name                                              |
-| value        | Get the current element value                                             |
-| defaultValue | Get and set the element defaultValue                                      |
-| required     | Get and set the required state                                            |
-| readOnly     | Get and set the readOnly state                                            |
-| disabled     | Get and set the disabled state                                            |
-| dismiss      | Get and set the dismiss state                                             |
-| placement    | Get and set the element placement. Use `top`, `right`, `bottom` or `left` |
-| alignment    | Get and set the element alignment. Use `start`, `middle` or `end`         |
+| Name         | Type     | Description                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------- |
+| empty        | `bool`   | Get the current `empty` state from the `input` slot element                       |
+| name         | `string` | Get and set the property `name` from the `input` slot element                     |
+| value        | `any`    | Get and set the property `value` from the `input` slot element                    |
+| defaultValue | `any`    | Get and set the property `defaultValue` from the `input` slot element             |
+| required     | `bool`   | Get and set the `required` state from the `input` slot element                    |
+| readOnly     | `bool`   | Get and set the `readOnly` state from the `input` slot element                    |
+| disabled     | `bool`   | Get and set the `disabled` state from the `input` slot element                    |
+| dismiss      | `bool`   | Get and set the `dismiss` state                                                   |
+| open         | `bool`   | Get the current `open` state                                                      |
+| placement    | -        | Get and set the element `placement` state. Use `top`, `right`, `bottom` or `left` |
+| alignment    | -        | Get and set the element `alignment` state. Use `start`, `middle` or `end`         |
 
 ### Methods
 
-| Name              | Description                                     |
-| ----------------- | ----------------------------------------------- |
-| focus             | Move the focus to the input slot element        |
-| reset             | Reset the current value to the default value    |
-| open              | Opens the panel element                         |
-| close             | Closes the panel element                        |
-| toggle            | Toggles the panel element                       |
-| checkValidity     | Get the validity of the input slot element      |
-| setCustomValidity | Set a custom validity in the input slot element |
+| Name              | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| focus             | Moves the current focus to the `input` slot element |
+| reset             | Reset the current value in the `input` slot element |
+| show              | Shows the content element                           |
+| hide              | Hides the content element                           |
+| toggle            | Toggles the content element                         |
+| checkValidity     | Get the validity from the `input` slot element      |
+| setCustomValidity | Set a custom validity in the `input` slot element   |
 
 ### Slots
 
-| Name  | Description                                                |
-| ----- | ---------------------------------------------------------- |
-| input | Element to receive the popover opening and closing actions |
-| panel | Element to be displayed while the opening action is active |
+| Name    | Description                                               |
+| ------- | --------------------------------------------------------- |
+| input   | Element to receive the popover `show` and `hide` actions  |
+| content | Element to be displayed while the `open` action is active |
 
 ### Events
 
-| Name  | Description                                                                        |
-| ----- | ---------------------------------------------------------------------------------- |
-| open  | Dispatched when the opening action is fired by the slotted input element           |
-| close | Dispatched when the closing action is fired by the slotted input element or window |
+| Name | Description                               |
+| ---- | ----------------------------------------- |
+| show | Dispatched when the alert becomes visible |
+| hide | Dispatched when the alert becomes hidden  |
 
-### CSS Variables
+### Styles
 
-| Name                       | Description                       |
-| -------------------------- | --------------------------------- |
-| --swe-popover-border-size  | Determines the panel border size  |
-| --swe-popover-border-color | Determines the panel border color |
+| Name                                | Description                          |
+| ----------------------------------- | ------------------------------------ |
+| --swe-popover-content-border-radius | Determines the content border radius |
+| --swe-popover-content-border-size   | Determines the content border size   |
+| --swe-popover-content-border-color  | Determines the content border color  |
+
+> These variables above are useful to customize the closed shadow DOM.
 
 ## Install
 
